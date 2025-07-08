@@ -1,0 +1,75 @@
+$login-width: 50%
+$container-color: #151515
+
+.login-wrapper
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 100vh
+
+    .login-container
+        background: $container-color
+        width: $login-width
+        margin: 0 auto
+        border-radius: 6px
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
+        display: flex
+        flex-direction: row
+
+        .login-banner
+            background-image: url("banner.png")
+            background-size: cover
+            background-position: center
+            width: 50%
+            border-radius: 6px 0 0 6px
+        
+        .login-right-container
+            padding: 20px
+
+            h1
+                margin: 0
+
+            .login-form
+                margin-top: 20px
+
+                input
+                    width: 100%
+                    border-radius: 0
+
+                    &[name="username"]
+                        border-radius: 6px 6px 0 0
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.15)
+                    
+                    &[name="password"]
+                        border-radius: 0 0 6px 6px
+                
+                button
+                    width: 100%
+                    margin-top: 10px
+            
+            .registration-notice
+                text-align: center
+                margin: 20px 0
+                position: relative
+
+                .text
+                    background-color: $container-color
+                    display: inline-block
+                    z-index: 2
+                    position: relative
+                    padding: 0 10px
+
+                &::before
+                    content: ""
+                    background-color: white
+                    height: 1px
+                    width: 100%
+                    position: absolute
+                    left: 0
+                    top: 50%
+                    z-index: 1
+                    opacity: 0.15
+            
+            .registration-button-container
+                button
+                    width: 100%
