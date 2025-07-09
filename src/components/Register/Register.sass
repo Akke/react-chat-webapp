@@ -1,50 +1,56 @@
-$login-width: 50%
+$register-width: 50%
 $container-color: #151515
 
-.login-wrapper
+.register-wrapper
     display: flex
     flex-direction: column
     align-items: center
     justify-content: center
     height: 100vh
 
-    .login-container
+    .register-container
         background: $container-color
-        width: $login-width
+        width: $register-width
         margin: 0 auto 40px
         border-radius: 6px
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
-        display: flex
-        flex-direction: row
-
-        .login-banner
-            background-image: url("banner.png")
-            background-size: cover
-            background-position: center
-            width: 75%
-            border-radius: 6px 0 0 6px
         
-        .login-right-container
+        .register-right-container
             padding: 40px
 
             h1
                 margin: 0
 
-            .login-form
+            .register-form
                 margin-top: 20px
+
+                .input-container
+                    display: flex
+                    margin-bottom: 10px
 
                 input
                     width: 100%
                     border-radius: 0
 
-                    &:first-of-type
-                        border-radius: 6px 6px 0 0
-                    
-                    &:not(:first-of-type)
-                        border-top: none
-                    
-                    &:last-of-type
-                        border-radius: 0 0 6px 6px
+                    &:is(.input-container input)
+                        &:nth-of-type(n+2)
+                            border-left: none
+                            
+                        &:first-of-type
+                            border-radius: 6px 0 0 6px
+                        
+                        &:last-of-type
+                            border-radius: 0 6px 6px 0
+
+                    &:not(.input-container input)
+                        &:nth-of-type(n+2)
+                            border-top: none
+
+                        &:first-of-type
+                            border-radius: 6px 6px 0 0
+                        
+                        &:last-of-type
+                            border-radius: 0 0 6px 6px
                 
                 button
                     width: 100%

@@ -1,5 +1,6 @@
 .login-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -7,7 +8,7 @@
 .login-wrapper .login-container {
   background: #151515;
   width: 50%;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   border-radius: 6px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -17,11 +18,11 @@
   background-image: url("banner.png");
   background-size: cover;
   background-position: center;
-  width: 50%;
+  width: 75%;
   border-radius: 6px 0 0 6px;
 }
 .login-wrapper .login-container .login-right-container {
-  padding: 20px;
+  padding: 40px;
 }
 .login-wrapper .login-container .login-right-container h1 {
   margin: 0;
@@ -33,16 +34,18 @@
   width: 100%;
   border-radius: 0;
 }
-.login-wrapper .login-container .login-right-container .login-form input[name=username] {
+.login-wrapper .login-container .login-right-container .login-form input:first-of-type {
   border-radius: 6px 6px 0 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
-.login-wrapper .login-container .login-right-container .login-form input[name=password] {
+.login-wrapper .login-container .login-right-container .login-form input:not(:first-of-type) {
+  border-top: none;
+}
+.login-wrapper .login-container .login-right-container .login-form input:last-of-type {
   border-radius: 0 0 6px 6px;
 }
 .login-wrapper .login-container .login-right-container .login-form button {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .login-wrapper .login-container .login-right-container .registration-notice {
   text-align: center;
@@ -59,13 +62,14 @@
 .login-wrapper .login-container .login-right-container .registration-notice::before {
   content: "";
   background-color: white;
-  height: 1px;
+  height: 4px;
   width: 100%;
   position: absolute;
   left: 0;
   top: 50%;
   z-index: 1;
-  opacity: 0.15;
+  border-radius: 6px;
+  opacity: 0.05;
 }
 .login-wrapper .login-container .login-right-container .registration-button-container button {
   width: 100%;

@@ -1,3 +1,4 @@
+import Copyright from "../Copyright/Copyright";
 import "./Login.css";
 
 const Login = () => {
@@ -26,6 +27,8 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+
+            <Copyright />
         </div>
     );
 }
