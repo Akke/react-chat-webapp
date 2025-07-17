@@ -1,7 +1,14 @@
 import Copyright from "../Copyright/Copyright";
+import notify from "../Notification/Notification";
 import "./Login.css";
 
-const Login = () => {
+const Login = ({ notify }) => {
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        notify({ type: "error", msg: Date.now() });
+    }
+
     return (
         <div className="login-wrapper">
             <div className="login-container">
@@ -10,7 +17,7 @@ const Login = () => {
                     <h1>Login to Chatify</h1>
                     <p>Stay connected across any distance — with the people who matter most.</p>
 
-                    <form className="login-form">
+                    <form className="login-form" onSubmit={onSubmit}>
                         <input type="text" name="username" placeholder="Username" />
                         <input type="password" name="password" placeholder="Password" />
                         <button type="submit">Login</button>
