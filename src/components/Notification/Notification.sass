@@ -1,5 +1,6 @@
 $notification-color: #151515
 $error-color: #e93e3e
+$success-color: #3ee952
 
 @keyframes width-animation
     from
@@ -24,6 +25,13 @@ $error-color: #e93e3e
 
         .message > .title
             color: $error-color
+    
+    &.success
+        .progress-bar
+            background-color: $success-color
+
+        .message > .title
+            color: $success-color
 
     .progress-bar
         background-color: #fff

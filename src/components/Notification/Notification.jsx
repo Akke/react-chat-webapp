@@ -22,7 +22,7 @@ const Notification = ({ type = "info", msg, id }) => {
 
         setIsVisible(true);
 
-        timer.current = setTimeout(() => clearNotification(), duration * 1000);
+        timer.current = setTimeout(() => clearNotification(), (duration-0.1) * 1000);
 
         return () => clearTimeout(timer.current);
     }, [id]);

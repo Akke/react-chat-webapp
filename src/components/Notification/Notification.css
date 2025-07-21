@@ -22,6 +22,12 @@
 .notification.error .message > .title {
   color: #e93e3e;
 }
+.notification.success .progress-bar {
+  background-color: #3ee952;
+}
+.notification.success .message > .title {
+  color: #3ee952;
+}
 .notification .progress-bar {
   background-color: #fff;
   border-radius: 6px 6px 0 0;

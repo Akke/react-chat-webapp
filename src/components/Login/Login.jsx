@@ -1,18 +1,26 @@
+import { userServiceLogin } from "../../service/userService";
 import Copyright from "../Copyright/Copyright";
-import notify from "../Notification/Notification";
 import "./Login.css";
 
 const Login = ({ notify }) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        notify({ type: "error", msg: Date.now() });
+        const formData = new FormData(e.target);
+        const username = formData.get("username");
+        const password = formData.get("password");
+
+        //notify({ type: "error", msg: Date.now() });
+        userServiceLogin(username, password);
     }
 
     return (
         <div className="login-wrapper">
             <div className="login-container">
-                <div className="login-banner"></div>
+                <div className="login-banner">
+                    <img src="banner.png" alt="Banner" />
+                </div>
+
                 <div className="login-right-container">
                     <h1>Login to Chatify</h1>
                     <p>Stay connected across any distance — with the people who matter most.</p>

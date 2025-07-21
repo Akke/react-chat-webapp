@@ -10,7 +10,7 @@ function App() {
 
     return (
       <>
-        <Login notify={setNotify} />
+        <Register notify={setNotify} />
         {notify.msg ? <Notification type={notify.type} msg={notify.msg} id={Date.now()} /> : null}
       </>
     )
