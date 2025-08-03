@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Copyright from "../Copyright/Copyright";
 import "./Register.css";
 import { userServiceRegister } from "../../service/userService";
+import { NotifyContext } from "../../contexts/NotifyProvider";
 
 const Register = ({ notify }) => {
+    const { createNotification } = useContext(NotifyContext);
+
     const [csrfToken, setCsrfToken] = useState("");
     
     const onSubmit = (e) => {
@@ -19,21 +22,21 @@ const Register = ({ notify }) => {
         const sendForm = async () => {
             const request = await userServiceRegister(username, password, repeatPassword, email, avatar, csrfToken);
             if(request.error) {
-                notify({ type: "error", msg: request.error });
+                createNotification({ type: "error", msg: request.error });
             } else {
-                notify({ type: "success", msg: request.message + ". Logging in and redirecting..." });
+                createNotification({ type: "success", msg: request.message + ". Logging in and redirecting..." });
             }
         }
 
         if(password === repeatPassword) {
             const isEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
             if(!isEmailRegex.test(email)) {
-                notify({ type: "error", msg: "Email is not  valid." });
+                createNotification({ type: "error", msg: "Email is not  valid." });
             } else {
                 sendForm();
             }
         } else {
-            notify({ type: "error", msg: "Password don't match." });
+            createNotification({ type: "error", msg: "Password don't match." });
         }
     }
 

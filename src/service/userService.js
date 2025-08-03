@@ -1,5 +1,19 @@
-export const userServiceLogin = (username, password) => {
+export const userServiceLogin = async (username, password, csrfToken) => {
     console.log("received login request for ", username, password)
+
+    const request = await fetch("https://chatify-api.up.railway.app/auth/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            csrfToken: csrfToken
+        })
+    });
+
+    const response = await request.json();
+    
+    return response;
 }
 
 export const userServiceRegister = async (username, password, repeatPassword, email, avatar, csrfToken) => {

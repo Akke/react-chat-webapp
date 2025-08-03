@@ -99,5 +99,5 @@ button.secondary::after {
   display: none;
 }
 button.secondary:hover {
-  background: #383838;
+  background: rgb(55.75, 55.75, 55.75);
 }/*# sourceMappingURL=App.css.map */
