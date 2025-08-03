@@ -19,6 +19,8 @@ const AuthProvider = (props) => {
         const decoded = jwtDecode(token);
 
         const data = {
+            jwt: token,
+            id: decoded.id,
             user: decoded.user,
             email: decoded.email,
             avatar: decoded.avatar,

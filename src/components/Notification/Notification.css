@@ -15,6 +15,7 @@
   border-radius: 6px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   min-width: 25%;
+  z-index: 4;
 }
 .notification.error .progress-bar {
   background-color: #e93e3e;

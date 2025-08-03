@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import Copyright from "../Copyright/Copyright";
 import "./Register.css";
-import { userServiceRegister } from "../../service/userService";
+import { userServiceLogin, userServiceRegister } from "../../service/userService";
 import { NotifyContext } from "../../contexts/NotifyProvider";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const Register = ({ notify }) => {
+    const { setAuth } = useContext(AuthContext);
     const { createNotification } = useContext(NotifyContext);
 
     const [csrfToken, setCsrfToken] = useState("");
@@ -25,6 +27,17 @@ const Register = ({ notify }) => {
                 createNotification({ type: "error", msg: request.error });
             } else {
                 createNotification({ type: "success", msg: request.message + ". Logging in and redirecting..." });
+                loginUser(username, password);
+            }
+        }
+
+        const loginUser = async (usr, pwd) => {
+            const request = await userServiceLogin(usr, pwd, csrfToken);
+            
+            if(request.error) {
+                createNotification({ type: "error", msg: request.error });
+            } else {
+                setAuth(request.token);
             }
         }
 
