@@ -4,9 +4,11 @@ import Copyright from "../Copyright/Copyright";
 import "./Login.css";
 import { NotifyContext } from "../../contexts/NotifyProvider";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const Login = ({}) => {
     const { createNotification } = useContext(NotifyContext);
+    const { setAuth } = useContext(AuthContext);
 
     const [csrfToken, setCsrfToken] = useState("");
         
@@ -19,11 +21,11 @@ const Login = ({}) => {
 
         const sendForm = async () => {
             const request = await userServiceLogin(username, password, csrfToken);
-            console.log(request)
+            
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
             } else {
-                createNotification({ type: "success", msg: request.message + ". Logging in and redirecting..." });
+                setAuth(request.token);
             }
         }
 

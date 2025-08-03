@@ -5,7 +5,7 @@ const Notification = ({ type = "info", msg, id }) => {
     const [isVisible, setIsVisible] = useState(true);
     const timer = useRef(null);
 
-    const duration = 5;
+    const duration = 3;
 
     const clearNotification = () => {
         setIsVisible(false);
