@@ -6,7 +6,8 @@ $self-message-body-text-color: #FFF
 .chat-wrapper
     display: flex
     min-height: 100vh
-    max-height: 100%
+    max-height: 100vh
+    overflow: hidden
 
     .menu
         display: flex
@@ -58,7 +59,6 @@ $self-message-body-text-color: #FFF
 
             .bottom-message-input-container
                 width: 100%
-                margin-top: auto
 
                 .message-form
                     width: 100%
@@ -70,6 +70,12 @@ $self-message-body-text-color: #FFF
                     
                     button
                         width: 10%
+                        font-size: 1.5em
+                        display: flex
+                        justify-content: center
+
+                        svg
+                            align-self: center
             
             .messages-list
                 display: flex
@@ -81,6 +87,7 @@ $self-message-body-text-color: #FFF
                 scrollbar-color: #2B2B2B transparent
                 scrollbar-width: thin
                 padding: 0 10px
+                margin-top: auto
 
                 .message-container
                     display: flex
@@ -101,11 +108,19 @@ $self-message-body-text-color: #FFF
                             height: 45px
                             width: 45px
                             border-radius: 6px
+
+                            &.simplified
+                                opacity: 0
                     
                     .message-body
                         background-color: rgba(255, 255, 255, 0.1)
                         padding: 10px
                         border-radius: 6px
+                        align-content: center
+
+                        &:hover
+                            .message-header.simplified
+                                display: block
 
                         .message-header
                             display: flex
@@ -114,12 +129,16 @@ $self-message-body-text-color: #FFF
                             align-items: center
                             margin-bottom: 10px
 
+                            &.simplified
+                                display: none
+
                             .message-user
                                 font-weight: bold
                                 color: #FFF
 
         .left-side-bar
             width: 25%
+            height: 100%
 
             .mini-profile-container
                 padding: 10px
@@ -143,8 +162,10 @@ $self-message-body-text-color: #FFF
                             width: 40px
 
             .conversation-list
-                border-top: 1px solid rgba(255, 255, 255, 0.1)
-                padding-top: 20px
+                max-height: 77%
+                overflow-y: auto
+                scrollbar-color: #2B2B2B transparent
+                scrollbar-width: thin
 
                 ul
                     list-style-type: none
@@ -153,7 +174,6 @@ $self-message-body-text-color: #FFF
                     display: flex
                     gap: 10px
                     flex-direction: column
-                    min-height: 100%
 
                     li
                         padding: 10px
@@ -162,11 +182,17 @@ $self-message-body-text-color: #FFF
                         gap: 20px
                         align-items: center
                         cursor: pointer
+                        opacity: 0.75
+                        transition: opacity 0.1s ease-in-out
 
                         .details
                             .username
                                 font-weight: bold
                                 color: $text-username-color
+
+                            .latest-message
+                                .empty-conversation-notice
+                                    opacity: 0.5
 
                         .timestamp
                             padding: 0 10px
@@ -180,6 +206,6 @@ $self-message-body-text-color: #FFF
                                 width: 40px
                                 border-radius: 6px
 
-                        &:hover
-                            background-color: rgba(255, 255, 255, 0.1)
+                        &:hover, &.active
                             color: $text-color-hover
+                            opacity: 1

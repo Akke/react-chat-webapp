@@ -29,7 +29,11 @@ const UserProvider = (props) => {
             .catch((e) => {
                 console.error(e);
             });
-    };
+    }
+
+    const getInviteInformation = () => {
+        
+    }
 
     return (
         <UserContext.Provider value={{ cacheUser, cachedUsers }}>

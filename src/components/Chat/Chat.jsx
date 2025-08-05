@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import InviteUser from "./InviteUser";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
 import { UserContext } from "../../contexts/UserProvider";
+import Loading from "./Loading";
 
 const Chat = () => {
     const { clearAuth, user } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
     const [currentConversationMessages, setCurrentConversationMessages] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         getConversations()
@@ -179,9 +180,9 @@ const Chat = () => {
                         </div>
                     </div>
 
+                    <InviteUser />
+
                     <div className="conversation-list">
-                        <InviteUser />
- 
                         <ul>
                             {(isLoaded && conversations && conversations.length) ? conversations.map((id) => {
                                 const latestMessage = getLatestConversationMessage(id);
@@ -190,17 +191,18 @@ const Chat = () => {
                                     if(cachedUsers[latestMessage.userId]) {
                                         const participants = getConversationParticipantsExceptSelf(id);
                                         const participantsUsernames = participants.map((p) => {
-                                            const temp = [];
-                                            temp.push(cachedUsers[p].username);
-                                            return temp.join(",");
+                                            if(cachedUsers[p]) {
+                                                const temp = [];
+                                                temp.push(cachedUsers[p].username);
+                                                return temp.join(",");
+                                            }
                                         });
                                         
-                                        const username = cachedUsers[latestMessage.userId].username;
-                                        const avatar = cachedUsers[latestMessage.userId].avatar;
+                                        const { username, avatar } = cachedUsers[latestMessage.userId];
                                         
                                         if(username) {
                                             return (
-                                                <li key={id} onClick={() => openConversation(id)}>
+                                                <li key={id} onClick={() => openConversation(id)} className={activeConversation == id ? "active" : ""}>
                                                     <div className="avatar"><img src={avatar} alt="Avatar" /></div>
                                                     <div className="details">
                                                         <div className="username">{participantsUsernames}</div>
@@ -221,7 +223,7 @@ const Chat = () => {
                                             <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
                                             <div className="details">
                                                 <div className="latest-message">
-                                                    No Messages
+                                                    <div className="empty-conversation-notice">(Contains no messages. Be the first one to say hello!)</div>
                                                 </div>
                                             </div>
                                         </li>
@@ -235,17 +237,22 @@ const Chat = () => {
                 <div className="right-side-message-container">
                     {activeConversation ? <>
                         <div className="messages-list">
-                            {currentConversationMessages.map((item) => {
+                            {currentConversationMessages.map((item, i) => {
+                                const { username, avatar } = cachedUsers[item.userId];
+                                const nextMessage = currentConversationMessages[i-1];
+
+                                let bSimplifyUI = nextMessage && nextMessage.userId == item.userId // whether to show less / "simplify" UI
+
                                 return (
-                                    <div className="message-container self" key={item.id}>
+                                    <div className={`message-container ${item.userId == user.id ? "self" : ""}`} key={item.id}>
                                         <div className="message-avatar">
-                                            <img src={user.avatar} alt="Avatar" />
+                                            <img src={avatar} className={`${bSimplifyUI ? "simplified" : ""}`} alt="Avatar" />
                                         </div>
 
                                         <div className="message-body">
-                                            <div className="message-header">
-                                                <div className="message-user">{item.userId}</div>
-                                                <div className="message-timestamp">{item.createdAt}</div>
+                                            <div className={`message-header ${bSimplifyUI ? "simplified" : ""}`}>
+                                                <div className="message-user">{username}</div>
+                                                <div className="message-timestamp">{formatMessageTimestamp(item.createdAt)}</div>
                                             </div>
                                             <div className="message-content">{item.text}</div>
                                         </div>

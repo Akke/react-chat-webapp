@@ -57,6 +57,11 @@
   width: 85%;
 }
 .chat-invite-user-container .chat-invite-user form button {
-  font-size: 1.25em;
+  font-size: 1.5em;
   width: 15%;
+  display: flex;
+  justify-content: center;
+}
+.chat-invite-user-container .chat-invite-user form button svg {
+  align-self: center;
 }/*# sourceMappingURL=InviteUser.css.map */
