@@ -6,14 +6,33 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import { Link } from "react-router-dom";
 import InviteUser from "./InviteUser";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
+import { UserContext } from "../../contexts/UserProvider";
 
 const Chat = () => {
     const { clearAuth, user } = useContext(AuthContext);
-
+    const { cacheUsernameFromId, cachedUsernames } = useContext(UserContext);
     const [conversations, setConversations] = useState([]);
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
     const [currentConversationMessages, setCurrentConversationMessages] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const conversationIds = await getConversations();
+            setConversations(conversationIds);
+
+            const fetchMessages = await getMessages();
+            setMessages(fetchMessages);
+        }
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        messages.forEach(msg => {
+            cacheUsernameFromId(msg.userId);
+        })
+    }, [messages]);
 
     const getMessages = async (conversationId = null) => {
         const request = await messageServiceGetMessages(user.jwt, conversationId);
@@ -48,18 +67,6 @@ const Chat = () => {
 
         return null;
     }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const conversationIds = await getConversations();
-            setConversations(conversationIds);
-
-            const fetchMessages = await getMessages();
-            setMessages(fetchMessages);
-        }
-
-        fetchData();
-    }, []);
 
     const onChatMessageSubmit = (e) => {
         e.preventDefault();
@@ -99,6 +106,18 @@ const Chat = () => {
         getAndFilterMessages();
     }
 
+    const getLatestConversationMessage = (id) => {
+        const filteredAndSorted = messages.filter((m) => m.conversationId == id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        return filteredAndSorted[0];
+    }
+
+    const formatMessagePreview = (text) => {
+        const limit = 40;
+        let trunc = text.slice(0, limit);
+        if(trunc.length == limit) trunc += "...";
+        return trunc;
+    }
+
     return (
         <div className="chat-wrapper">
             <nav className="menu">
@@ -126,17 +145,27 @@ const Chat = () => {
 
                         <ul>
                             {(conversations && conversations.length) ? conversations.map((id) => {
-                                return (
-                                    <li key={id} onClick={() => openConversation(id)}>
-                                        <div className="avatar"><img src="https://avatars.githubusercontent.com/u/6265267?v=4" alt="Avatar" /></div>
-                                        <div className="details">
-                                            <div className="username">Axel Axelsson</div>
-                                            <div className="latest-message">You: I sent this message some time...</div>
-                                        </div>
-                                        <div className="timestamp">20m</div>
-                                    </li>
-                                );
-                            }) : <>No conversations found.</>}
+                                const conversationData = getLatestConversationMessage(id);
+                                if(conversationData) {
+                                    const username = cachedUsernames[conversationData.userId];
+                                    
+                                    if(username) {
+                                        return (
+                                            <li key={id} onClick={() => openConversation(id)}>
+                                                <div className="avatar"><img src="https://avatars.githubusercontent.com/u/6265267?v=4" alt="Avatar" /></div>
+                                                <div className="details">
+                                                    <div className="username">{username}</div>
+                                                    <div className="latest-message">
+                                                        {conversationData.userId == user.id ? "You: " : `${user.id}: `} 
+                                                        {formatMessagePreview(conversationData.text)}
+                                                    </div>
+                                                </div>
+                                                <div className="timestamp">20m</div>
+                                            </li>
+                                        );
+                                    }
+                                }
+                            }) : <></>}
                         </ul>
                     </div>
                 </div>
