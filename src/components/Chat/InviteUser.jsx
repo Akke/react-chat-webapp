@@ -46,7 +46,7 @@ const InviteUser = () => {
                 <div className="chat-invite-overlay"></div>
                 <div className="chat-invite-user">
                     <div className="title">
-                        <h1>Invite a user</h1>
+                        <h2>Invite a user</h2>
                         <div className="close" onClick={() => setVisible(false)}><IoClose /></div>
                     </div>
 

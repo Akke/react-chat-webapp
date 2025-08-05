@@ -30,7 +30,7 @@
 .chat-invite-user-container .chat-invite-user .title {
   display: flex;
 }
-.chat-invite-user-container .chat-invite-user .title h1 {
+.chat-invite-user-container .chat-invite-user .title h2 {
   margin: 0 0 10px 0;
   padding: 0;
 }

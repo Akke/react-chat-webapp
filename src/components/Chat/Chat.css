@@ -162,13 +162,14 @@
 }
 .chat-wrapper .chat-container .left-side-bar .conversation-list ul li .timestamp {
   padding: 0 10px;
+  margin-left: auto;
 }
 .chat-wrapper .chat-container .left-side-bar .conversation-list ul li .avatar {
   display: flex;
 }
 .chat-wrapper .chat-container .left-side-bar .conversation-list ul li .avatar img {
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   border-radius: 6px;
 }
 .chat-wrapper .chat-container .left-side-bar .conversation-list ul li:hover {

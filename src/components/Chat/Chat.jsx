@@ -96,7 +96,7 @@ const Chat = () => {
 
     const openConversation = async (id) => {
         const getAndFilterMessages = async () => {
-            const msgs = await getMessages(id);
+            const msgs = await getMessages(id); // fetch fresh when opening conversation
             const filtered = msgs.filter((m) => m.conversationId == id);
 
             setCurrentConversationMessages(filtered);
@@ -116,6 +116,38 @@ const Chat = () => {
         let trunc = text.slice(0, limit);
         if(trunc.length == limit) trunc += "...";
         return trunc;
+    }
+
+    const formatMessageTimestamp = (timestamp) => {
+        const units = {
+            year: 24 * 60 * 60 * 1000 * 365,
+            month: 24 * 60 * 60 * 1000 * 365/12,
+            day: 24 * 60 * 60 * 1000,
+            hour: 60 * 60 * 1000,
+            minute: 60 * 1000,
+            second: 1000
+        }
+
+        const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto", style: "narrow" });
+        const elapsed = new Date(timestamp) - new Date();
+        for(const unit in units) {
+            if(Math.abs(elapsed) > units[unit] || unit == "second") {
+                const time = Math.round(elapsed / units[unit]);
+                return rtf.format(time, unit)
+            }
+        }
+    }
+
+    const getConversationParticipantsExceptSelf = (id) => {
+        const participants = [];
+
+        const filteredAndSorted = messages.filter((m) => {
+            if(m.conversationId == id && m.userId != user.id) {
+                participants.push(m.userId);
+            }
+        });
+
+        return participants.length ? participants : [user.id];
     }
 
     return (
@@ -148,19 +180,25 @@ const Chat = () => {
                                 const conversationData = getLatestConversationMessage(id);
                                 if(conversationData) {
                                     const username = cachedUsernames[conversationData.userId];
+                                    const participants = getConversationParticipantsExceptSelf(id);
+                                    const participantsUsernames = participants.map((p) => {
+                                        const temp = [];
+                                        temp.push(cachedUsernames[p]);
+                                        return temp.join(",");
+                                    });
                                     
                                     if(username) {
                                         return (
                                             <li key={id} onClick={() => openConversation(id)}>
-                                                <div className="avatar"><img src="https://avatars.githubusercontent.com/u/6265267?v=4" alt="Avatar" /></div>
+                                                <div className="avatar"><img src="" alt="Avatar" /></div>
                                                 <div className="details">
-                                                    <div className="username">{username}</div>
+                                                    <div className="username">{participantsUsernames}</div>
                                                     <div className="latest-message">
-                                                        {conversationData.userId == user.id ? "You: " : `${user.id}: `} 
+                                                        {conversationData.userId == user.id ? "You: " : `${username}: `} 
                                                         {formatMessagePreview(conversationData.text)}
                                                     </div>
                                                 </div>
-                                                <div className="timestamp">20m</div>
+                                                <div className="timestamp">{formatMessageTimestamp(conversationData.createdAt)}</div>
                                             </li>
                                         );
                                     }

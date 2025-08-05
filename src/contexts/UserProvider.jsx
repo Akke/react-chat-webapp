@@ -9,11 +9,11 @@ const UserProvider = (props) => {
     const [cachedUsernames, setCachedUsernames] = useState({});
 
     const cacheUsernameFromId = (id) => {
-        if(cachedUsernames[id]) return cachedUsernames[id];
+        if(cachedUsernames[id]) return;
 
-        const username = userServiceGetUsernameFromId(id, user.jwt)
-                .then((response) => setCachedUsernames(prev => ({...prev, [id]: response })))
-                .catch((e) => console.error(e));
+        userServiceGetUsernameFromId(id, user.jwt)
+            .then((response) => setCachedUsernames(prev => ({...prev, [id]: response })))
+            .catch((e) => console.error(e));
     }
 
     return (
