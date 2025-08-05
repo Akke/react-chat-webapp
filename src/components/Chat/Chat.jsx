@@ -15,17 +15,21 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
     const [currentConversationMessages, setCurrentConversationMessages] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
-        const fetchData = async () => {
-            const conversationIds = await getConversations();
-            setConversations(conversationIds);
+        getConversations()
+            .then((conversationIds) => {
+                setConversations(conversationIds);
 
-            const fetchMessages = await getMessages();
-            setMessages(fetchMessages);
-        }
-
-        fetchData();
+                conversationIds.map((id) => {
+                    getMessages(id)
+                        .then((response) => setMessages(prev => ([...prev, ...response])))
+                        .finally(() => setIsLoaded(true))
+                        .catch((e) => console.error(e));
+                });
+            })
+            .catch((e) => console.error(e));
     }, []);
 
     useEffect(() => {
@@ -107,6 +111,8 @@ const Chat = () => {
     }
 
     const getLatestConversationMessage = (id) => {
+        if(!isLoaded) return;
+        
         const filteredAndSorted = messages.filter((m) => m.conversationId == id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         return filteredAndSorted[0];
     }
@@ -142,10 +148,11 @@ const Chat = () => {
         const participants = [];
 
         const filteredAndSorted = messages.filter((m) => {
-            if(m.conversationId == id && m.userId != user.id) {
+            if(m.conversationId == id && m.userId != user.id && !participants.includes(m.userId)) {
                 participants.push(m.userId);
             }
         });
+
 
         return participants.length ? participants : [user.id];
     }
@@ -174,23 +181,25 @@ const Chat = () => {
 
                     <div className="conversation-list">
                         <InviteUser />
-
+ 
                         <ul>
-                            {(conversations && conversations.length) ? conversations.map((id) => {
+                            {(isLoaded && conversations && conversations.length) ? conversations.map((id) => {
                                 const conversationData = getLatestConversationMessage(id);
+
+                                const participants = getConversationParticipantsExceptSelf(id);
+                                const participantsUsernames = participants.map((p) => {
+                                    const temp = [];
+                                    temp.push(cachedUsernames[p]);
+                                    return temp.join(",");
+                                });
+
                                 if(conversationData) {
                                     const username = cachedUsernames[conversationData.userId];
-                                    const participants = getConversationParticipantsExceptSelf(id);
-                                    const participantsUsernames = participants.map((p) => {
-                                        const temp = [];
-                                        temp.push(cachedUsernames[p]);
-                                        return temp.join(",");
-                                    });
                                     
                                     if(username) {
                                         return (
                                             <li key={id} onClick={() => openConversation(id)}>
-                                                <div className="avatar"><img src="" alt="Avatar" /></div>
+                                                <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
                                                 <div className="details">
                                                     <div className="username">{participantsUsernames}</div>
                                                     <div className="latest-message">
@@ -202,6 +211,17 @@ const Chat = () => {
                                             </li>
                                         );
                                     }
+                                } else {
+                                    return (
+                                            <li key={id} onClick={() => openConversation(id)}>
+                                                <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
+                                                <div className="details">
+                                                    <div className="latest-message">
+                                                        No Messages
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        );
                                 }
                             }) : <></>}
                         </ul>
