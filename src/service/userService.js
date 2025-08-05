@@ -53,7 +53,7 @@ export const userServiceInvite = async (userId, jwt) => {
     return response;
 }
 
-export const userServiceGetUsernameFromId = async (userId, jwt) => {
+export const userServiceGetUserFromId = async (userId, jwt) => {
     const request = await fetch(`https://chatify-api.up.railway.app/users/${userId}`, {
         method: "GET",
         headers: { 
@@ -64,5 +64,5 @@ export const userServiceGetUsernameFromId = async (userId, jwt) => {
 
     const response = await request.json();
 
-    return response[0].username;
+    return response[0];
 }

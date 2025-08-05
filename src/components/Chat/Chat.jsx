@@ -10,7 +10,7 @@ import { UserContext } from "../../contexts/UserProvider";
 
 const Chat = () => {
     const { clearAuth, user } = useContext(AuthContext);
-    const { cacheUsernameFromId, cachedUsernames } = useContext(UserContext);
+    const { cacheUser, cachedUsers } = useContext(UserContext);
     const [conversations, setConversations] = useState([]);
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
@@ -34,7 +34,7 @@ const Chat = () => {
 
     useEffect(() => {
         messages.forEach(msg => {
-            cacheUsernameFromId(msg.userId);
+            cacheUser(msg.userId);
         })
     }, [messages]);
 
@@ -111,7 +111,7 @@ const Chat = () => {
     }
 
     const getLatestConversationMessage = (id) => {
-        if(!isLoaded) return;
+        if(!isLoaded) return null;
         
         const filteredAndSorted = messages.filter((m) => m.conversationId == id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         return filteredAndSorted[0];
@@ -184,44 +184,48 @@ const Chat = () => {
  
                         <ul>
                             {(isLoaded && conversations && conversations.length) ? conversations.map((id) => {
-                                const conversationData = getLatestConversationMessage(id);
+                                const latestMessage = getLatestConversationMessage(id);
 
-                                const participants = getConversationParticipantsExceptSelf(id);
-                                const participantsUsernames = participants.map((p) => {
-                                    const temp = [];
-                                    temp.push(cachedUsernames[p]);
-                                    return temp.join(",");
-                                });
-
-                                if(conversationData) {
-                                    const username = cachedUsernames[conversationData.userId];
-                                    
-                                    if(username) {
-                                        return (
-                                            <li key={id} onClick={() => openConversation(id)}>
-                                                <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
-                                                <div className="details">
-                                                    <div className="username">{participantsUsernames}</div>
-                                                    <div className="latest-message">
-                                                        {conversationData.userId == user.id ? "You: " : `${username}: `} 
-                                                        {formatMessagePreview(conversationData.text)}
+                                if(latestMessage) {
+                                    if(cachedUsers[latestMessage.userId]) {
+                                        const participants = getConversationParticipantsExceptSelf(id);
+                                        const participantsUsernames = participants.map((p) => {
+                                            const temp = [];
+                                            temp.push(cachedUsers[p].username);
+                                            return temp.join(",");
+                                        });
+                                        
+                                        const username = cachedUsers[latestMessage.userId].username;
+                                        const avatar = cachedUsers[latestMessage.userId].avatar;
+                                        
+                                        if(username) {
+                                            return (
+                                                <li key={id} onClick={() => openConversation(id)}>
+                                                    <div className="avatar"><img src={avatar} alt="Avatar" /></div>
+                                                    <div className="details">
+                                                        <div className="username">{participantsUsernames}</div>
+                                                        <div className="latest-message">
+                                                            {latestMessage.userId == user.id ? "You: " : `${username}: `} 
+                                                            {formatMessagePreview(latestMessage.text)}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="timestamp">{formatMessageTimestamp(conversationData.createdAt)}</div>
-                                            </li>
-                                        );
+                                                    <div className="timestamp">{formatMessageTimestamp(latestMessage.createdAt)}</div>
+                                                </li>
+                                            );
+                                        }
                                     }
                                 } else {
+                                    // there is no latest message - conversation is empty
                                     return (
-                                            <li key={id} onClick={() => openConversation(id)}>
-                                                <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
-                                                <div className="details">
-                                                    <div className="latest-message">
-                                                        No Messages
-                                                    </div>
+                                        <li key={id} onClick={() => openConversation(id)}>
+                                            <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
+                                            <div className="details">
+                                                <div className="latest-message">
+                                                    No Messages
                                                 </div>
-                                            </li>
-                                        );
+                                            </div>
+                                        </li>
+                                    );
                                 }
                             }) : <></>}
                         </ul>

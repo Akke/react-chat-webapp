@@ -1,23 +1,38 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { userServiceGetUsernameFromId } from "../service/userService";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { userServiceGetUserFromId } from "../service/userService";
 import { AuthContext } from "./AuthProvider";
 
 export const UserContext = createContext();
 
 const UserProvider = (props) => {
     const { user } = useContext(AuthContext);
-    const [cachedUsernames, setCachedUsernames] = useState({});
+    const [cachedUsers, setCachedUsers] = useState({});
+    const fetchedUsers = useRef(new Set());
 
-    const cacheUsernameFromId = (id) => {
-        if(cachedUsernames[id]) return;
+    // tricky react moment where states havent been properly updated yet
+    // so if two API requests run simultaneously then it doesnt see that
+    // cachedUsers has been updated since it uses old information.
+    // this can be fixed by using useRef which doesnt trigger rerenders and
+    // allows us to keep track of what user we actually have already cached.
+    const cacheUser = (id) => {
+        if(cachedUsers[id] || fetchedUsers.current.has(id)) return; // if the user has been cached or is in the process of being cached, skip
 
-        userServiceGetUsernameFromId(id, user.jwt)
-            .then((response) => setCachedUsernames(prev => ({...prev, [id]: response })))
-            .catch((e) => console.error(e));
-    }
+        fetchedUsers.current.add(id);
+
+        userServiceGetUserFromId(id, user.jwt)
+            .then((response) => {
+                setCachedUsers(prev => ({
+                    ...prev,
+                    [id]: response
+                }));
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    };
 
     return (
-        <UserContext.Provider value={{ cacheUsernameFromId, cachedUsernames }}>
+        <UserContext.Provider value={{ cacheUser, cachedUsers }}>
             {props.children}
         </UserContext.Provider>
     );
