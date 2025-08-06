@@ -118,7 +118,7 @@ const Chat = () => {
     }
 
     const formatMessagePreview = (text) => {
-        const limit = 40;
+        const limit = 15;
         let trunc = text.slice(0, limit);
         if(trunc.length == limit) trunc += "...";
         return trunc;
