@@ -1,0 +1,53 @@
+.conversation-list {
+  max-height: 77%;
+  overflow-y: auto;
+  scrollbar-color: #2B2B2B transparent;
+  scrollbar-width: thin;
+}
+.conversation-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.conversation-list ul li {
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.1s ease-in-out;
+}
+.conversation-list ul li .details {
+  flex: 6;
+}
+.conversation-list ul li .details .username {
+  font-weight: bold;
+  color: #FFF;
+}
+.conversation-list ul li .details .latest-message .empty-conversation-notice {
+  opacity: 0.5;
+}
+.conversation-list ul li .timestamp {
+  padding: 0 10px;
+  margin-left: auto;
+  flex: 1;
+  text-align: center;
+}
+.conversation-list ul li .avatar {
+  display: flex;
+  flex: 1;
+}
+.conversation-list ul li .avatar img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.conversation-list ul li:hover, .conversation-list ul li.active {
+  color: #FFF;
+  opacity: 1;
+}/*# sourceMappingURL=ConversationList.css.map */

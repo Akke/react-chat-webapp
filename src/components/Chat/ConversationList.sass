@@ -1,0 +1,56 @@
+$text-color-hover: #FFF
+$text-username-color: #FFF
+
+.conversation-list
+    max-height: 77%
+    overflow-y: auto
+    scrollbar-color: #2B2B2B transparent
+    scrollbar-width: thin
+
+    ul
+        list-style-type: none
+        margin: 0
+        padding: 0
+        display: flex
+        gap: 10px
+        flex-direction: column
+
+        li
+            padding: 10px
+            border-radius: 6px
+            display: flex
+            gap: 20px
+            align-items: center
+            cursor: pointer
+            opacity: 0.75
+            transition: opacity 0.1s ease-in-out
+
+            .details
+                flex: 6
+
+                .username
+                    font-weight: bold
+                    color: $text-username-color
+
+                .latest-message
+                    .empty-conversation-notice
+                        opacity: 0.5
+
+            .timestamp
+                padding: 0 10px
+                margin-left: auto
+                flex: 1
+                text-align: center
+
+            .avatar
+                display: flex
+                flex: 1
+
+                img
+                    height: 40px
+                    width: 40px
+                    border-radius: 50%
+
+            &:hover, &.active
+                color: $text-color-hover
+                opacity: 1

@@ -1,0 +1,18 @@
+.mini-profile-container {
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+.mini-profile-container .mini-profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.mini-profile-container .mini-profile .username .name {
+  font-weight: bold;
+  color: #FFF;
+}
+.mini-profile-container .mini-profile .avatar img {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}/*# sourceMappingURL=MiniProfile.css.map */
