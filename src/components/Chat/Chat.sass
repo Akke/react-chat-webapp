@@ -14,6 +14,7 @@ $self-message-body-text-color: #FFF
         flex-direction: column
         min-height: 100%
         max-height: 100%
+        background-color: #101010
 
         ul
             list-style-type: none
@@ -21,6 +22,7 @@ $self-message-body-text-color: #FFF
             margin: 0
             display: flex
             flex-direction: column
+            height: 100%
 
             > a
                 padding: 10px 20px
@@ -29,6 +31,11 @@ $self-message-body-text-color: #FFF
                 text-align: center
                 text-decoration: none
                 margin-bottom: 10px
+                opacity: 0.75
+                transition: opacity 0.1s ease-in-out
+
+                &.logout
+                    margin-top: auto
 
                 li
                     svg
@@ -37,7 +44,7 @@ $self-message-body-text-color: #FFF
                         font-size: 1.5em
 
                 &:hover
-                    background-color: rgba(255, 255, 255, 0.1)
+                    opacity: 1
                     color: $text-color-hover
     
     .chat-container
@@ -45,17 +52,21 @@ $self-message-body-text-color: #FFF
         width: 100%
         min-height: 100vh
         max-height: 100vh
-        padding: 20px
         display: flex
         flex-direction: row
 
         .right-side-message-container
-            border-left: 1px solid rgba(255, 255, 255, 0.1)
-            margin-left: 20px
+            border-left: 1px solid rgba(255, 255, 255, 0.05)
             width: 75%
-            padding-left: 20px
+            padding: 20px
             display: flex
             flex-direction: column
+
+            .no-chats
+                align-self: center
+                height: 100%
+                font-size: 10em
+                opacity: 0.1
 
             .bottom-message-input-container
                 width: 100%
@@ -107,7 +118,7 @@ $self-message-body-text-color: #FFF
                         img
                             height: 45px
                             width: 45px
-                            border-radius: 6px
+                            border-radius: 50%
 
                             &.simplified
                                 opacity: 0
@@ -139,10 +150,11 @@ $self-message-body-text-color: #FFF
         .left-side-bar
             width: 25%
             height: 100%
+            border-left: 1px solid rgba(255, 255, 255, 0.05)
+            padding: 20px
+            background-color: #101010
 
             .mini-profile-container
-                padding: 10px
-                background-color: rgba(255, 255, 255, 0.05)
                 margin-bottom: 20px
                 border-radius: 6px
 
@@ -152,12 +164,13 @@ $self-message-body-text-color: #FFF
                     gap: 20px
 
                     .username
-                        font-weight: bold
-                        color: #FFF
+                        .name
+                            font-weight: bold
+                            color: #FFF
 
                     .avatar
                         img
-                            border-radius: 6px
+                            border-radius: 50%
                             height: 40px
                             width: 40px
 
@@ -204,7 +217,7 @@ $self-message-body-text-color: #FFF
                             img
                                 height: 40px
                                 width: 40px
-                                border-radius: 6px
+                                border-radius: 50%
 
                         &:hover, &.active
                             color: $text-color-hover

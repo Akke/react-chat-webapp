@@ -13,6 +13,7 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
+  border-radius: 6px;
 }
 .login-wrapper .login-container .login-banner {
   width: 40%;
@@ -23,6 +24,7 @@
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+  border-radius: 6px 0 0 6px;
 }
 .login-wrapper .login-container .login-right-container {
   padding: 40px;

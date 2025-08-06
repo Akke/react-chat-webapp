@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import "./Chat.css";
 
-import { IoChatbox, IoLogOut, IoSend } from "react-icons/io5";
+import { IoChatbox, IoChatboxEllipses, IoLogOut, IoSend } from "react-icons/io5";
 import { AuthContext } from "../../contexts/AuthProvider";
 import { Link } from "react-router-dom";
 import InviteUser from "./InviteUser";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
 import { UserContext } from "../../contexts/UserProvider";
-import Loading from "./Loading";
 
 const Chat = () => {
     const { clearAuth, user } = useContext(AuthContext);
@@ -162,7 +161,7 @@ const Chat = () => {
         <div className="chat-wrapper">
             <nav className="menu">
                 <ul>
-                    <Link to="/" onClick={clearAuth}>
+                    <Link to="/" onClick={clearAuth} className="logout">
                         <li><IoLogOut /> Logout</li>
                     </Link>
                 </ul>
@@ -176,7 +175,7 @@ const Chat = () => {
                                 <img src={user.avatar} alt="Avatar" />
                             </div>
 
-                            <div className="username">{user.user}</div>
+                            <div className="username">Greetings, <span className="name">{user.user}</span></div>
                         </div>
                     </div>
 
@@ -267,11 +266,8 @@ const Chat = () => {
                                 <button><IoSend /></button>
                             </form>
                         </div>
-                    </> : <>Open a conversation to begin chatting.</>}
-                    
+                    </> : <><IoChatboxEllipses className="no-chats" /></>}
                 </div>
-
-                
             </div>
         </div>
     );
