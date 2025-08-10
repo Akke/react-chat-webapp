@@ -3,6 +3,7 @@ import { AuthContext } from "../../../contexts/AuthProvider";
 import { UserContext } from "../../../contexts/UserProvider";
 import formatDate from "../../../utils/formatDate";
 import "./ConversationItem.css";
+import AvatarPreview from "../../../components/AvatarPreview/AvatarPreview";
 
 const ConversationItem = ({ id, openConversation, activeConversation, isLoaded, messages }) => {
     const { user } = useContext(AuthContext);
@@ -12,7 +13,7 @@ const ConversationItem = ({ id, openConversation, activeConversation, isLoaded, 
 
     if(!latestMessage) return (
         <li key={id} onClick={() => openConversation(id)} className="conversation-item">
-            <div className="avatar"><img src={user.avatar} alt="Avatar" /></div>
+            <AvatarPreview sourceUrl={user.avatar} small={true} />
             <div className="details">
                 <div className="latest-message">
                     <div className="empty-conversation-notice">(Contains no messages. Be the first one to say hello!)</div>
@@ -41,7 +42,7 @@ const ConversationItem = ({ id, openConversation, activeConversation, isLoaded, 
     
     return (
         <li onClick={() => openConversation(id)} className={activeConversation == id ? "conversation-item active" : "conversation-item"}>
-            <div className="avatar"><img src={avatar} alt="Avatar" /></div>
+            <AvatarPreview sourceUrl={avatar} small={true} />
             <div className="details">
                 <div className="username">{participants}</div>
                 <div className="latest-message">

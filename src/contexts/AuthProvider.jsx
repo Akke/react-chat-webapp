@@ -8,10 +8,19 @@ const AuthProvider = (props) => {
 
     useEffect(() => {
         const cache = localStorage.getItem("user");
-        if(cache) {
-            setUser(JSON.parse(cache));
-        } else if(!cache && user) {
-            clearAuth();
+        if(cache && !user) {
+            const parsedCache = JSON.parse(cache);
+            const decodedJwt = jwtDecode(parsedCache.jwt);
+
+            if(decodedJwt && decodedJwt.exp) {
+                const dateNow = new Date();
+                const expiryDate = new Date(decodedJwt.exp*1000);
+                if(dateNow > expiryDate) {
+                    clearAuth();
+                } else {
+                    setUser(JSON.parse(cache));
+                }
+            }
         }
     }, []);
 

@@ -3,6 +3,7 @@ import { AuthContext } from "../../../contexts/AuthProvider";
 import { UserContext } from "../../../contexts/UserProvider";
 import formatDate from "../../../utils/formatDate";
 import "./MessageItem.css";
+import AvatarPreview from "../../../components/AvatarPreview/AvatarPreview";
 
 const MessageItem = ({ currentConversationMessages, item, i }) => {
     const { cachedUsers } = useContext(UserContext);
@@ -14,13 +15,11 @@ const MessageItem = ({ currentConversationMessages, item, i }) => {
     let bSimplifyUI = prevMessage && prevMessage.userId == item.userId // whether to show less / "simplify" UI
 
     return (
-        <div className={`message-container ${item.userId == user.id ? "self" : ""}`} key={item.id}>
-            <div className="message-avatar">
-                <img src={avatar} className={`${bSimplifyUI ? "simplified" : ""}`} alt="Avatar" />
-            </div>
+        <div className={`message-container ${item.userId == user.id ? "self" : ""} ${bSimplifyUI ? "simplified" : ""}`} key={item.id}>
+            <AvatarPreview sourceUrl={avatar} small={true} />
 
             <div className="message-body">
-                <div className={`message-header ${bSimplifyUI ? "simplified" : ""}`}>
+                <div className="message-header">
                     <div className="message-user">{username}</div>
                     <div className="message-timestamp">{formatDate(item.createdAt)}</div>
                     <div className="message-actions">Delete</div>

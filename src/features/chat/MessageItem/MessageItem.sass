@@ -8,6 +8,17 @@ $self-message-body-text-color: #FFF
     max-width: 50%
     width: fit-content
 
+    &.simplified
+        .message-avatar > img, .avatar-preview > img
+            opacity: 0
+        
+        .message-body .message-header
+            display: none
+        
+        &:hover
+            .message-body .message-header
+                display: block
+
     &.self
         margin-left: auto
 
@@ -20,9 +31,6 @@ $self-message-body-text-color: #FFF
             height: 45px
             width: 45px
             border-radius: 50%
-
-            &.simplified
-                opacity: 0
     
     .message-body
         background-color: rgba(255, 255, 255, 0.1)
@@ -30,19 +38,12 @@ $self-message-body-text-color: #FFF
         border-radius: 6px
         align-content: center
 
-        &:hover
-            .message-header.simplified
-                display: block
-
         .message-header
             display: flex
             flex-direction: row
             gap: 10px
             align-items: center
             margin-bottom: 10px
-
-            &.simplified
-                display: none
 
             .message-user
                 font-weight: bold
