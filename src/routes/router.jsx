@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "../components/Login/Login";
-import Register from "../components/Register/Register";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import Chat from "../components/Chat/Chat";
+import LoginPage from "../pages/login/LoginPage";
+import AuthLayout from "../layouts/AuthLayout/AuthLayout";
+import RegisterPage from "../pages/register/RegisterPage";
+import MainLayout from "../layouts/MainLayout/MainLayout";
+import ChatPage from "../pages/chat/ChatPage";
 
 const Router = () => {
     const { user } = useContext(AuthContext);
@@ -14,11 +16,21 @@ const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route exact path="/" element={<ProtectedRoute isAuthenticated={user != null} />}>
-                    <Route index element={<Chat />} />
+                    <Route element={<MainLayout />}>
+                        <Route index element={<ChatPage />} />
+                    </Route>
                 </Route>
 
                 <Route exact path="/register" element={<PublicRoute isAuthenticated={user != null} />}>
-                    <Route index element={<Register />} />
+                    <Route element={<AuthLayout />}>
+                        <Route index element={<RegisterPage />} />
+                    </Route>
+                </Route>
+
+                <Route exact path="/login" element={<PublicRoute isAuthenticated={user != null} />}>
+                    <Route element={<AuthLayout />}>
+                        <Route index element={<LoginPage />} />
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

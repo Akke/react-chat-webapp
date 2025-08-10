@@ -1,10 +1,5 @@
-import Login from "./components/Login/Login";
-import "./App.css";
-import Register from "./components/Register/Register";
-import Chat from "./components/Chat/Chat";
-import Notification from "./components/Notification/Notification";
-import { useState } from "react";
-import Router from "./routes/router";
+import "./styles/App.css";
+import Router from "./routes/Router";
 
 function App() {
     return (

@@ -1,0 +1,39 @@
+li.conversation-item {
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.1s ease-in-out;
+}
+li.conversation-item .details {
+  flex: 6;
+}
+li.conversation-item .details .username {
+  font-weight: bold;
+  color: #FFF;
+}
+li.conversation-item .details .latest-message .empty-conversation-notice {
+  opacity: 0.5;
+}
+li.conversation-item .timestamp {
+  padding: 0 10px;
+  margin-left: auto;
+  flex: 1;
+  text-align: center;
+}
+li.conversation-item .avatar {
+  display: flex;
+  flex: 1;
+}
+li.conversation-item .avatar img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+li.conversation-item:hover, li.conversation-item.active {
+  color: #FFF;
+  opacity: 1;
+}/*# sourceMappingURL=ConversationItem.css.map */

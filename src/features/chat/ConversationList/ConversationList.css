@@ -1,0 +1,14 @@
+.conversation-list {
+  max-height: 77%;
+  overflow-y: auto;
+  scrollbar-color: #2B2B2B transparent;
+  scrollbar-width: thin;
+}
+.conversation-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}/*# sourceMappingURL=ConversationList.css.map */

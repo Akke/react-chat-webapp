@@ -1,0 +1,29 @@
+$register-width: 50%
+$container-color: #151515
+
+.auth-wrapper
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    height: 100vh
+
+    .auth-container
+        background: $container-color
+        width: $register-width
+        margin: 0 auto 40px
+        border-radius: 6px
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
+        display: flex
+        flex-direction: row
+        border-radius: 6px
+
+        .auth-banner
+            width: 40%
+            border-radius: 6px 0 0 6px
+
+            img
+                width: 100%
+                height: 100%
+                object-fit: cover
+                border-radius: 6px 0 0 6px

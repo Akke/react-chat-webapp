@@ -1,0 +1,36 @@
+$container-color: #151515
+
+.register-right-container
+    padding: 40px
+    width: 60%
+
+    h1
+        margin: 0
+    
+    .registration-notice
+        text-align: center
+        margin: 20px 0
+        position: relative
+
+        .text
+            background-color: $container-color
+            display: inline-block
+            z-index: 2
+            position: relative
+            padding: 0 10px
+
+        &::before
+            content: ""
+            background-color: white
+            height: 4px
+            width: 100%
+            position: absolute
+            left: 0
+            top: 50%
+            z-index: 1
+            border-radius: 6px
+            opacity: 0.05
+    
+    .registration-button-container
+        button
+            width: 100%

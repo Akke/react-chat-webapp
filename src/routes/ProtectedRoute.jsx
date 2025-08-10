@@ -1,8 +1,7 @@
-import { Outlet } from "react-router";
-import Login from "../components/Login/Login";
+import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoute = ({ isAuthenticated }) => {
-    return isAuthenticated ? <Outlet /> : <Login />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 export default ProtectedRoute;

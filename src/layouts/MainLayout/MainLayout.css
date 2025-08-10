@@ -1,0 +1,6 @@
+.main-wrapper {
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}/*# sourceMappingURL=MainLayout.css.map */

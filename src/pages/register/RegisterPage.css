@@ -1,0 +1,34 @@
+.register-right-container {
+  padding: 40px;
+  width: 60%;
+}
+.register-right-container h1 {
+  margin: 0;
+}
+.register-right-container .registration-notice {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.register-right-container .registration-notice .text {
+  background-color: #151515;
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+  padding: 0 10px;
+}
+.register-right-container .registration-notice::before {
+  content: "";
+  background-color: white;
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 1;
+  border-radius: 6px;
+  opacity: 0.05;
+}
+.register-right-container .registration-button-container button {
+  width: 100%;
+}/*# sourceMappingURL=RegisterPage.css.map */

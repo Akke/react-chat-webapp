@@ -1,0 +1,12 @@
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 100%;
+  margin-bottom: 20px;
+  scrollbar-color: #2B2B2B transparent;
+  scrollbar-width: thin;
+  padding: 0 10px;
+  margin-top: auto;
+}/*# sourceMappingURL=MessageList.css.map */

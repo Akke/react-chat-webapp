@@ -1,0 +1,20 @@
+.login-form {
+  margin-top: 20px;
+}
+.login-form input {
+  width: 100%;
+  border-radius: 0;
+}
+.login-form input:first-of-type {
+  border-radius: 6px 6px 0 0;
+}
+.login-form input:not(:first-of-type) {
+  border-top: none;
+}
+.login-form input:last-of-type {
+  border-radius: 0 0 6px 6px;
+}
+.login-form button {
+  width: 100%;
+  margin-top: 20px;
+}/*# sourceMappingURL=LoginForm.css.map */

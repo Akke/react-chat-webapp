@@ -1,0 +1,33 @@
+.login-right-container {
+  padding: 40px;
+}
+.login-right-container h1 {
+  margin: 0;
+}
+.login-right-container .registration-notice {
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+.login-right-container .registration-notice .text {
+  background-color: #151515;
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+  padding: 0 10px;
+}
+.login-right-container .registration-notice::before {
+  content: "";
+  background-color: white;
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 1;
+  border-radius: 6px;
+  opacity: 0.05;
+}
+.login-right-container .registration-button-container button {
+  width: 100%;
+}/*# sourceMappingURL=LoginPage.css.map */

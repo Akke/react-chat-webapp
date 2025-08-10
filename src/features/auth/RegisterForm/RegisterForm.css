@@ -1,0 +1,33 @@
+.register-form {
+  margin-top: 20px;
+}
+.register-form .input-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.register-form input {
+  width: 100%;
+  border-radius: 0;
+}
+.register-form input:is(.input-container input):nth-of-type(n+2) {
+  border-left: none;
+}
+.register-form input:is(.input-container input):first-of-type {
+  border-radius: 6px 0 0 6px;
+}
+.register-form input:is(.input-container input):last-of-type {
+  border-radius: 0 6px 6px 0;
+}
+.register-form input:not(.input-container input):nth-of-type(n+2) {
+  border-top: none;
+}
+.register-form input:not(.input-container input):first-of-type {
+  border-radius: 6px 6px 0 0;
+}
+.register-form input:not(.input-container input):last-of-type {
+  border-radius: 0 0 6px 6px;
+}
+.register-form button {
+  width: 100%;
+  margin-top: 20px;
+}/*# sourceMappingURL=RegisterForm.css.map */
