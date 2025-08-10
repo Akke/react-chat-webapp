@@ -1,13 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { userServiceRegister } from "../../../service/userService";
 import { redirect } from "react-router-dom";
 import "./RegisterForm.css";
+import MiniProfile from "../../chat/MiniProfile/MiniProfile";
 
 const RegisterForm = () => {
     const { setAuth } = useContext(AuthContext);
     const { createNotification } = useContext(NotifyContext);
+
+    const [avatarUrl, setAvatarUrl] = useState("");
+    const [username, setUsername] = useState("");
+
+    const onAvatarChanged = (e) => {
+        setAvatarUrl(e.target.value);
+    }
+
+    const onUsernameChanged = (e) => {
+        setUsername(e.target.value);
+    }
     
     const onSubmit = (e) => {
         e.preventDefault();
@@ -54,11 +66,14 @@ const RegisterForm = () => {
 
     return (
         <form className="register-form" onSubmit={onSubmit}>
-            <input type="text" name="username" placeholder="Username" />
+            <input type="text" name="username" placeholder="Username" onChange={onUsernameChanged} />
             <input type="password" name="password" placeholder="Password" />
             <input type="password" name="repeatpassword" placeholder="Repeat Password" />
             <input type="email" name="email" placeholder="E-mail" />
-            <input type="text" name="avatar" placeholder="Avatar (URL)" />
+            <input type="text" name="avatar" placeholder="Avatar (URL)" onChange={onAvatarChanged} className="input-avatar" />
+
+            <MiniProfile avatar={avatarUrl} username={username} />
+
             <p>By creating your account you agree to our Terms of Service and Privacy Policy.</p>
             <button type="submit">Confirm and create account</button>
         </form>

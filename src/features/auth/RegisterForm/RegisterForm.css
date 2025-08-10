@@ -9,6 +9,9 @@
   width: 100%;
   border-radius: 0;
 }
+.register-form input.input-avatar {
+  margin-bottom: 20px;
+}
 .register-form input:is(.input-container input):nth-of-type(n+2) {
   border-left: none;
 }

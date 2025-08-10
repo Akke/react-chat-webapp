@@ -1,14 +1,13 @@
+import AvatarPreview from "../../../components/AvatarPreview/AvatarPreview";
 import "./MiniProfile.css";
 
 const MiniProfile = ({ avatar, username }) => {
     return (
         <div className="mini-profile-container">
             <div className="mini-profile">
-                <div className="avatar">
-                    <img src={avatar} alt="Avatar" />
-                </div>
+                <AvatarPreview sourceUrl={avatar || "https://avatars.githubusercontent.com/u/6265267?v=4"} />
 
-                <div className="username">Greetings, <span className="name">{username}</span></div>
+                <div className="username">Greetings, <span className="name">{username || "user"}</span></div>
             </div>
         </div>
     );
