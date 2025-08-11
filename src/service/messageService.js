@@ -54,3 +54,17 @@ export const messageServicePostMessage = async (text, conversationId, jwt) => {
     
     return response;
 }
+
+export const messageServiceDeleteMessage = async (msgId, jwt) => {
+    const request = await fetch(`https://chatify-api.up.railway.app/messages/${msgId}`, {
+        method: "DELETE",
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwt}`
+        }
+    });
+
+    const response = await request.json();
+    
+    return response;
+}

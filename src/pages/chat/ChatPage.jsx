@@ -7,10 +7,12 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 import { UserContext } from "../../contexts/UserProvider";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
+import { NotifyContext } from "../../contexts/NotifyProvider";
 
 const ChatPage = () => {
     const { user } = useContext(AuthContext);
     const { cacheUser, cachedUsers } = useContext(UserContext);
+    const { createNotification } = useContext(NotifyContext);
     const [conversations, setConversations] = useState([]);
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
@@ -133,6 +135,7 @@ const ChatPage = () => {
                 <MessageList
                     activeConversation={activeConversation}
                     currentConversationMessages={currentConversationMessages} 
+                    setCurrentConversationMessages={setCurrentConversationMessages}
                     onChatMessageSubmit={onChatMessageSubmit}
                 />
             </div>

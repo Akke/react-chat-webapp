@@ -1,4 +1,4 @@
-const formatDate = (timestamp) => {
+export const convertDateToRelevantTime = (timestamp) => {
     const units = {
         year: 24 * 60 * 60 * 1000 * 365,
         month: 24 * 60 * 60 * 1000 * 365/12,
@@ -13,9 +13,12 @@ const formatDate = (timestamp) => {
     for(const unit in units) {
         if(Math.abs(elapsed) > units[unit] || unit == "second") {
             const time = Math.round(elapsed / units[unit]);
-            return rtf.format(time, unit)
+            return rtf.format(time, unit).split(" ")[0];
         }
     }
 }
 
-export default formatDate;
+export const formatDateToReadable = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${new Date(date).toDateString()}, ${new Date(date).toLocaleTimeString()}`
+}

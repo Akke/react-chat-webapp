@@ -1,19 +1,19 @@
 .message-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   gap: 10px;
-  max-width: 50%;
+  max-width: 75%;
   width: -moz-fit-content;
   width: fit-content;
 }
 .message-container.simplified .message-avatar > img, .message-container.simplified .avatar-preview > img {
   opacity: 0;
 }
-.message-container.simplified .message-body .message-header {
-  display: none;
+.message-container.simplified .message-body {
+  border-radius: 12px;
 }
-.message-container.simplified:hover .message-body .message-header {
-  display: block;
+.message-container.simplified .message-body::after {
+  display: none;
 }
 .message-container.self {
   margin-left: auto;
@@ -22,16 +22,38 @@
   background-color: #3B33BD;
   color: #FFF;
 }
-.message-container .message-avatar img {
+.message-container.self .message-body::after {
+  border-left-color: #3B33BD;
+}
+.message-container.self .message-body .message-header {
+  display: none;
+}
+.message-container:not(.message-container.self) .message-body .message-footer .message-actions {
+  display: none;
+}
+.message-container .message-avatar img, .message-container .avatar-preview img {
   height: 45px;
   width: 45px;
-  border-radius: 50%;
+  margin-top: auto;
 }
 .message-container .message-body {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #252525;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 12px 12px 0 12px;
   align-content: center;
+  flex: 1;
+  position: relative;
+  margin-right: 10px;
+}
+.message-container .message-body::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-left: 10px solid #252525;
+  position: absolute;
+  right: -9px;
+  bottom: 0;
 }
 .message-container .message-body .message-header {
   display: flex;
@@ -43,4 +65,22 @@
 .message-container .message-body .message-header .message-user {
   font-weight: bold;
   color: #FFF;
+}
+.message-container .message-body .message-footer {
+  display: flex;
+  font-size: 0.8em;
+  margin-top: 10px;
+  gap: 20px;
+  justify-content: space-between;
+}
+.message-container .message-body .message-footer .message-actions {
+  display: flex;
+}
+.message-container .message-body .message-footer .message-actions .message-delete {
+  color: #ff9090;
+  cursor: pointer;
+  transiton: color 0.1s ease-in-out;
+}
+.message-container .message-body .message-footer .message-actions .message-delete:hover {
+  color: #ff6767;
 }/*# sourceMappingURL=MessageItem.css.map */

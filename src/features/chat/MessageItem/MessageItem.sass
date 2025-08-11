@@ -1,23 +1,23 @@
 $self-message-body-color: #3B33BD
 $self-message-body-text-color: #FFF
+$message-body-color: #252525
 
 .message-container
     display: flex
-    flex-direction: row
+    flex-direction: row-reverse
     gap: 10px
-    max-width: 50%
+    max-width: 75%
     width: fit-content
 
     &.simplified
         .message-avatar > img, .avatar-preview > img
             opacity: 0
         
-        .message-body .message-header
-            display: none
-        
-        &:hover
-            .message-body .message-header
-                display: block
+        .message-body
+            border-radius: 12px
+
+            &::after
+                display: none
 
     &.self
         margin-left: auto
@@ -26,17 +26,40 @@ $self-message-body-text-color: #FFF
             background-color: $self-message-body-color
             color: $self-message-body-text-color
 
-    .message-avatar
+            &::after
+                border-left-color: $self-message-body-color
+
+            .message-header
+                display: none
+    
+    &:not(&.self)
+        .message-body .message-footer .message-actions
+            display: none
+
+    .message-avatar, .avatar-preview
         img
             height: 45px
             width: 45px
-            border-radius: 50%
+            margin-top: auto
     
     .message-body
-        background-color: rgba(255, 255, 255, 0.1)
+        background-color: $message-body-color
         padding: 10px
-        border-radius: 6px
+        border-radius: 12px 12px 0 12px
         align-content: center
+        flex: 1
+        position: relative
+        margin-right: 10px
+
+        &::after
+            content: ""
+            width: 0 
+            height: 0
+            border-top: 20px solid transparent
+            border-left: 10px solid $message-body-color
+            position: absolute
+            right: -9px
+            bottom: 0
 
         .message-header
             display: flex
@@ -48,3 +71,21 @@ $self-message-body-text-color: #FFF
             .message-user
                 font-weight: bold
                 color: #FFF
+        
+        .message-footer
+            display: flex
+            font-size: 0.8em
+            margin-top: 10px
+            gap: 20px
+            justify-content: space-between
+
+            .message-actions
+                display: flex
+
+                .message-delete
+                    color: #ff9090
+                    cursor: pointer
+                    transiton: color 0.1s ease-in-out
+
+                    &:hover
+                        color: #ff6767

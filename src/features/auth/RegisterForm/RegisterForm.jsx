@@ -2,14 +2,14 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { userServiceRegister } from "../../../service/userService";
-import { redirect } from "react-router-dom";
 import "./RegisterForm.css";
 import MiniProfile from "../../chat/MiniProfile/MiniProfile";
+import { useNavigate } from "react-router-dom";
 
-const RegisterForm = () => {
+const RegisterForm = ({ csrfToken }) => {
+    const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
     const { createNotification } = useContext(NotifyContext);
-
     const [avatarUrl, setAvatarUrl] = useState("");
     const [username, setUsername] = useState("");
 
@@ -36,19 +36,8 @@ const RegisterForm = () => {
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
             } else {
-                createNotification({ type: "success", msg: request.message + ". Logging in and redirecting..." });
-                loginUser(username, password);
-            }
-        }
-
-        const loginUser = async (usr, pwd) => {
-            const request = await userServiceLogin(usr, pwd, csrfToken);
-            
-            if(request.error) {
-                createNotification({ type: "error", msg: request.error });
-            } else {
-                setAuth(request.token);
-                redirect("/");
+                createNotification({ type: "success", msg: request.message + ". Redirecting to login." });
+                navigate("/login");
             }
         }
 

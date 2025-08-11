@@ -3,7 +3,7 @@ import "./MessageList.css";
 import MessageItem from "../MessageItem/MessageItem";
 import MessageForm from "../MessageForm/MessageForm";
 
-const MessageList = ({ activeConversation, currentConversationMessages, onChatMessageSubmit }) => {
+const MessageList = ({ activeConversation, currentConversationMessages, setCurrentConversationMessages, onChatMessageSubmit }) => {
     if(!activeConversation) return <IoChatboxEllipses className="no-chats" />;
 
     return (
@@ -13,6 +13,7 @@ const MessageList = ({ activeConversation, currentConversationMessages, onChatMe
                     <MessageItem
                         key={item.id}
                         currentConversationMessages={currentConversationMessages}
+                        setCurrentConversationMessages={setCurrentConversationMessages}
                         item={item}
                         i={i}
                     />

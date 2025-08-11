@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import { UserContext } from "../../../contexts/UserProvider";
-import formatDate from "../../../utils/formatDate";
+import { convertDateToRelevantTime } from "../../../utils/formatDate";
 import "./ConversationItem.css";
 import AvatarPreview from "../../../components/AvatarPreview/AvatarPreview";
 
@@ -50,7 +50,7 @@ const ConversationItem = ({ id, openConversation, activeConversation, isLoaded, 
                     {latestMessage.text.slice(0, 15)}...
                 </div>
             </div>
-            <div className="timestamp">{formatDate(latestMessage.createdAt)}</div>
+            <div className="timestamp">{convertDateToRelevantTime(latestMessage.createdAt)}</div>
         </li>
     );
 }
