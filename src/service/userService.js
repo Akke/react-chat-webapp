@@ -84,3 +84,17 @@ export const userServiceUpdateUser = async (userId, data, jwt) => {
 
     return response;
 }
+
+export const userServiceDeleteUser = async (userId, jwt) => {
+    const request = await fetch(`https://chatify-api.up.railway.app/users/${userId}`, {
+        method: "DELETE",
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwt}`
+        }
+    });
+
+    const response = await request.json();
+
+    return response;
+}

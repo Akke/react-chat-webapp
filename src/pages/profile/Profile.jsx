@@ -3,14 +3,16 @@ import "./Profile.css";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 import AvatarPreview from "../../components/AvatarPreview/AvatarPreview";
-import { userServiceLogin, userServiceUpdateUser } from "../../service/userService";
+import { userServiceDeleteUser, userServiceLogin, userServiceUpdateUser } from "../../service/userService";
 import { NotifyContext } from "../../contexts/NotifyProvider";
+import Modal from "../../components/Modal/Modal";
 
 const Profile = () => {
-    const { user, setAuth } = useContext(AuthContext);
+    const { user, setAuth, clearAuth } = useContext(AuthContext);
     const [avatar, setAvatar] = useState(user.avatar);
     const { createNotification } = useContext(NotifyContext);
     const [csrfToken, setCsrfToken] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
     
     useEffect(() => {
         fetch("https://chatify-api.up.railway.app/csrf", {
@@ -22,6 +24,31 @@ const Profile = () => {
     
     const onUserAvatarChanged = (e) => {
         setAvatar(e.target.value);
+    }
+
+    const onSubmitDeleteAccount = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const username = formData.get("username-delete-account-confirm");
+
+        const sendForm = async () => {
+            if(username != user.user) {
+                createNotification({ type: "error", msg: "Please enter your username correctly to confirm deletion of your account." });
+                return;
+            }
+
+            const deleteAccountRequest = await userServiceDeleteUser(user.id, user.jwt);
+            if(deleteAccountRequest.error) {
+                createNotification({ type: "error", msg: deleteAccountRequest.error });
+                return;
+            }
+
+            createNotification({ type: "success", msg: deleteAccountRequest.message });
+            clearAuth();
+        }
+
+        sendForm();
     }
 
     const onSettingsSubmit = (e) => {
@@ -97,7 +124,20 @@ const Profile = () => {
                 </form>
 
                 <div className="delete-account">
-                    <button><IoWarning /> Delete Account</button>
+                    <Modal
+                        isVisible={modalVisible}
+                        title={"Account Deletion Confirmation"}
+                        content={(<>
+                            <p>Are you sure you want to delete your account? This process cannot be undone.</p>
+                            <p>Enter your username to confirm deletion of your account.</p>
+                            <form method="DELETE" onSubmit={onSubmitDeleteAccount}>
+                                <input type="text" name="username-delete-account-confirm"  placeholder="Username" />
+                                <button type="submit" className="button-delete"><IoWarning /> Confirm and Delete Account</button>
+                            </form>
+                        </>)}
+                        onHandleClose={() => setModalVisible(false)}
+                    />
+                    <button onClick={() => setModalVisible(true)} className="button-delete"><IoWarning /> Delete Account</button>
                 </div>
             </div>
         </div>
