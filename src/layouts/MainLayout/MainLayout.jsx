@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Menu from "../../components/Menu/Menu";
+import SideNav from "../../components/SideNav/SideNav";
 import "./MainLayout.css";
 
 const MainLayout = () => {
     return (
         <div className="main-wrapper">
-            <Menu />
+            <SideNav />
 
             <Outlet />
         </div>

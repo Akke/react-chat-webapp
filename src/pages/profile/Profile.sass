@@ -1,0 +1,62 @@
+.profile-container
+    background-color: #151515
+    min-height: 100vh
+    width: 100%
+    overflow: auto
+
+    h1
+        margin: 0 0 20px 0
+    
+    h3
+        margin: 20px 0 0 0
+
+    .profile-inner-wrap
+        width: 50%
+        background-color: #101010
+        border-right: 1px solid rgba(255, 255, 255, 0.05)
+        padding: 20px
+
+        .profile-user-settings
+            display: flex
+            flex-direction: column
+            gap: 10px
+
+            button
+                display: flex
+                justify-content: center
+                align-items: center
+                gap: 5px
+
+            .confirm-password
+                border-top: 1px solid rgba(255, 255, 255, 0.05)
+                width: 100%
+                margin-top: 20px
+
+                input
+                    width: 100%
+
+            .avatar-preview
+                justify-content: flex-start
+
+                img
+                    height: 180px
+                    width: 180px
+            
+        .delete-account
+            border-top: 1px solid rgba(255, 255, 255, 0.05)
+            width: 100%
+            margin-top: 20px
+            padding-top: 20px
+
+            button
+                background-color: #bd2626
+                display: flex
+                justify-content: center
+                align-items: center
+                gap: 5px
+
+                &:hover
+                    background-color: #d43a3a
+
+                &::after
+                    display: none

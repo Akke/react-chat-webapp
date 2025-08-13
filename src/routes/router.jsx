@@ -8,9 +8,14 @@ import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import RegisterPage from "../pages/register/RegisterPage";
 import MainLayout from "../layouts/MainLayout/MainLayout";
 import ChatPage from "../pages/chat/ChatPage";
+import Profile from "../pages/profile/Profile";
 
 const Router = () => {
-    const { user } = useContext(AuthContext);
+    const { user, authReady } = useContext(AuthContext);
+
+    if(!authReady) {
+        return (<>Loading...</>);
+    }
 
     return (
         <BrowserRouter>
@@ -30,6 +35,12 @@ const Router = () => {
                 <Route exact path="/login" element={<PublicRoute isAuthenticated={user != null} />}>
                     <Route element={<AuthLayout />}>
                         <Route index element={<LoginPage />} />
+                    </Route>
+                </Route>
+
+                <Route exact path="/profile" element={<ProtectedRoute isAuthenticated={user != null} />}>
+                    <Route element={<MainLayout />}>
+                        <Route index element={<Profile />} />
                     </Route>
                 </Route>
             </Routes>

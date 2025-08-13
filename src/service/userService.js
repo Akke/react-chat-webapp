@@ -66,3 +66,21 @@ export const userServiceGetUserFromId = async (userId, jwt) => {
 
     return response[0];
 }
+
+export const userServiceUpdateUser = async (userId, data, jwt) => {
+    const request = await fetch(`https://chatify-api.up.railway.app/user`, {
+        method: "PUT",
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwt}`
+        },
+        body: JSON.stringify({
+            userId: userId,
+            updatedData: data
+        })
+    });
+
+    const response = await request.json();
+
+    return response;
+}

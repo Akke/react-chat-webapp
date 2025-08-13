@@ -22,6 +22,8 @@ const ChatPage = () => {
     useEffect(() => {
         getConversations()
             .then((conversationIds) => {
+                if(!conversationIds) return;
+
                 setConversations(conversationIds);
 
                 conversationIds.map((id) => {
@@ -111,7 +113,7 @@ const ChatPage = () => {
 
         getAndFilterMessages();
     }
-    
+
     return (
         <div className="chat-container">
             <div className="left-side-bar">

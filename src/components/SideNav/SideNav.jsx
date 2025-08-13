@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
-import "./Menu.css";
+import "./SideNav.css";
 import { Link } from "react-router-dom";
 import { IoLogOut, IoPersonCircle } from "react-icons/io5";
 
-const Menu = () => {
+const SideNav = () => {
     const { clearAuth } = useContext(AuthContext);
 
     return (
-        <nav className="menu">
+        <nav className="side-nav">
             <ul>
                 <Link to="/profile">
                     <li><IoPersonCircle /> Profile</li>
@@ -22,4 +22,4 @@ const Menu = () => {
     );
 }
 
-export default Menu;
+export default SideNav;

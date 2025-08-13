@@ -1,11 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userServiceLogin } from "../service/userService";
 
 export const AuthContext = createContext();
 
 const AuthProvider = (props) => {
     const [user, setUser] = useState(null);
+    const [authReady, setAuthReady] = useState(false);
 
     useEffect(() => {
         const cache = localStorage.getItem("user");
@@ -24,6 +26,10 @@ const AuthProvider = (props) => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        setAuthReady(true);
+    }, [user]);
 
     const setAuth = (token) => {
         const decoded = jwtDecode(token);
@@ -48,7 +54,7 @@ const AuthProvider = (props) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setAuth, clearAuth }}>
+        <AuthContext.Provider value={{ user, setAuth, clearAuth, authReady, setUser }}>
             {props.children}
         </AuthContext.Provider>
     );
