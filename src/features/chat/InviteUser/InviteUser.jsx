@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import "./InviteUser.css";
-import { IoAdd, IoClose } from "react-icons/io5";
 import { userServiceInvite } from "../../../service/userService";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { AuthContext } from "../../../contexts/AuthProvider";
+import Modal from "../../../components/Modal/Modal";
 
 const InviteUser = () => {
     const { createNotification } = useContext(NotifyContext);
     const { user } = useContext(AuthContext);
-    const [visible, setVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -38,24 +38,19 @@ const InviteUser = () => {
 
     return (
         <div className="chat-invite-user-container">
-            <button className="invite-button" onClick={() => setVisible(true)}>Invite User</button>
-
-            {visible ? <>
-                <div className="chat-invite-overlay"></div>
-                <div className="chat-invite-user">
-                    <div className="title">
-                        <h2>Invite a user</h2>
-                        <div className="close" onClick={() => setVisible(false)}><IoClose /></div>
-                    </div>
-
+            <Modal
+                isVisible={modalVisible}
+                title={"Invite a user"}
+                content={(<>
                     <p>You can invite another user to start a conversation with them, all you need is their unique identifier.</p>
                     <form action="POST" className="chat-invite-user-form" onSubmit={onSubmit}>
                         <input type="text" name="userId" placeholder="Enter a User ID" />
-                        <button type="submit"><IoAdd /></button>
+                        <button type="submit">Send Invite</button>
                     </form>
-                </div>
-            </> : <></>}
-            
+                </>)}
+                onHandleClose={() => setModalVisible(false)}
+            />
+            <button className="invite-button" onClick={() => setModalVisible(true)}>Invite User</button>
         </div>
     );
 };
