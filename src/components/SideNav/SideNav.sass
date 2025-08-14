@@ -1,4 +1,6 @@
 $text-color-hover: #FFF
+$logo-color-1: #3B33BD
+$logo-color-2: #C161F9
 
 .side-nav
     display: flex
@@ -7,6 +9,47 @@ $text-color-hover: #FFF
     max-height: 100%
     background-color: #101010
     border-right: 1px solid rgba(255, 255, 255, 0.05)
+
+    &.minimized
+        .side-header
+            padding: 20px
+            
+            .logo
+                display: none
+
+        ul
+            a
+                width: fit-content
+
+            li
+                span
+                    display: none
+
+    .side-header
+        display: flex
+        padding: 20px 30px 20px 20px
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+        align-items: center
+
+        .logo
+            font-weight: bold
+            background: -webkit-linear-gradient(0deg, $logo-color-1, $logo-color-2)
+            -webkit-background-clip: text
+            -webkit-text-fill-color: transparent
+            font-size: 1.5em
+            margin-left: 10px
+        
+        .toggle-button
+            cursor: pointer
+            padding: 10px
+            margin: 0
+            border-radius: 6px
+            transition: all 0.1s ease-in-out
+            font-size: 1.5em
+            display: flex
+
+            &:hover
+                background-color: rgba(0, 0, 0, 0.3)
 
     ul
         list-style-type: none
@@ -19,22 +62,26 @@ $text-color-hover: #FFF
         > a
             padding: 10px 20px
             border-radius: 6px
-            transition: background-color 0.1s ease
             text-align: center
             text-decoration: none
             margin-bottom: 10px
             opacity: 0.75
-            transition: opacity 0.1s ease-in-out
+            transition: all 0.1s ease-in-out
 
             &.logout
                 margin-top: auto
 
             li
+                display: flex
+                gap: 10px
+                align-items: center
+                
                 svg
                     display: block
-                    margin: 0 auto 5px
-                    font-size: 1.5em
+                    margin: 0
+                    font-size: 2em
 
             &:hover
                 opacity: 1
                 color: $text-color-hover
+                background-color: rgba(0, 0, 0, 0.3)

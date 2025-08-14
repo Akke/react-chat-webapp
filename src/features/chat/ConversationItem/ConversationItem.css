@@ -36,4 +36,5 @@ li.conversation-item .avatar img {
 li.conversation-item:hover, li.conversation-item.active {
   color: #FFF;
   opacity: 1;
+  background-color: rgba(0, 0, 0, 0.3);
 }/*# sourceMappingURL=ConversationItem.css.map */
