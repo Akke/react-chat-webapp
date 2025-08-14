@@ -1,20 +1,33 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "./InviteUser.css";
-import { userServiceInvite } from "../../../service/userService";
+import { userServiceGetUserFromId, userServiceInvite } from "../../../service/userService";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import Modal from "../../../components/Modal/Modal";
+import MiniProfile from "../MiniProfile/MiniProfile";
 
 const InviteUser = () => {
     const { createNotification } = useContext(NotifyContext);
     const { user } = useContext(AuthContext);
     const [modalVisible, setModalVisible] = useState(false);
+    const [invitedUser, setInvitedUser] = useState(null);
+    const inviteButton = useRef(null);
 
     const onSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
         const userId = formData.get("userId");
+
+        const getInvitedUserData = async () => {
+            const request = await userServiceGetUserFromId(userId, user.jwt);
+            if(request.error) {
+                createNotification({ type: "error", msg: request.error });
+            } else {
+                setInvitedUser(request);
+                inviteButton.current.innerText = "Send Invite";
+            }
+        }
 
         const sendForm = async () => {
             const request = await userServiceInvite(userId, user.jwt);
@@ -32,7 +45,11 @@ const InviteUser = () => {
         if(!userId) {
             createNotification({ type: "error", msg: "Enter a user ID." });
         } else {
-            sendForm();
+            if(!invitedUser) {
+                getInvitedUserData();
+            } else {
+                sendForm();
+            }
         }
     }
 
@@ -42,10 +59,18 @@ const InviteUser = () => {
                 isVisible={modalVisible}
                 title={"Invite a user"}
                 content={(<>
-                    <p>You can invite another user to start a conversation with them, all you need is their unique identifier.</p>
+                    <p>You can invite another user to start a conversation with them, all you need is their unique identifier. Enter their user ID to preview the user before inviting them.</p>
+                    
+                    {invitedUser ? 
+                        <MiniProfile 
+                            avatar={invitedUser.avatar}
+                            username={invitedUser.username}
+                        /> 
+                    : <></> }
+
                     <form action="POST" className="chat-invite-user-form" onSubmit={onSubmit}>
                         <input type="text" name="userId" placeholder="Enter a User ID" />
-                        <button type="submit">Send Invite</button>
+                        <button type="submit" ref={inviteButton}>Preview User</button>
                     </form>
                 </>)}
                 onHandleClose={() => setModalVisible(false)}

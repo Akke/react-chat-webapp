@@ -98,3 +98,17 @@ export const userServiceDeleteUser = async (userId, jwt) => {
 
     return response;
 }
+
+export const userServiceGetUsers = async (jwt) => {
+    const request = await fetch(`https://chatify-api.up.railway.app/users`, {
+        method: "GET",
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwt}`
+        }
+    });
+
+    const response = await request.json();
+
+    return response;
+}

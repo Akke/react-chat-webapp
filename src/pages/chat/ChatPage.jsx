@@ -11,7 +11,7 @@ import { NotifyContext } from "../../contexts/NotifyProvider";
 
 const ChatPage = () => {
     const { user } = useContext(AuthContext);
-    const { cacheUser, cachedUsers } = useContext(UserContext);
+    const { cacheUser, cachedUsers, cacheUsers } = useContext(UserContext);
     const { createNotification } = useContext(NotifyContext);
     const [conversations, setConversations] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -37,9 +37,10 @@ const ChatPage = () => {
     }, []);
 
     useEffect(() => {
-        messages.forEach(msg => {
+        /*messages.forEach(msg => {
             cacheUser(msg.userId);
-        })
+        })*/
+       cacheUsers();
     }, [messages]);
 
     const getMessages = async (conversationId = null) => {

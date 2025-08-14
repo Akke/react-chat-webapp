@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { userServiceGetUserFromId } from "../service/userService";
+import { userServiceGetUserFromId, userServiceGetUsers } from "../service/userService";
 import { AuthContext } from "./AuthProvider";
 
 export const UserContext = createContext();
@@ -31,12 +31,29 @@ const UserProvider = (props) => {
             });
     }
 
-    const getInviteInformation = () => {
-        
+    const cacheUsers = () => {
+        if(Object.keys(cachedUsers).length > 0) return;
+
+        userServiceGetUsers(user.jwt)
+            .then((response) => {
+                for(const userData of response) {
+                    const id = userData.userId;
+                    if(!cachedUsers[id] && !fetchedUsers.current.has(id)) {
+                        fetchedUsers.current.add(id);
+                        setCachedUsers(prev => ({
+                            ...prev,
+                            [id]: userData
+                        }));
+                    }
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+            });
     }
 
     return (
-        <UserContext.Provider value={{ cacheUser, cachedUsers }}>
+        <UserContext.Provider value={{ cacheUser, cachedUsers, cacheUsers }}>
             {props.children}
         </UserContext.Provider>
     );
