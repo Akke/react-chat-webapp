@@ -23,13 +23,17 @@ const InviteUser = ({ setConversations }) => {
 
         const getInvitedUserData = async () => {
             const request = await userServiceGetUserFromId(userId, user.jwt);
-            console.log(request)
+            
+            if(!request) {
+                createNotification({ type: "error", msg: `User ${userId} does not exist.` });
+                createLog("error", `User ${userId} does not exist.`, "error_log_get_invited_user_data");
+            }
+
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
                 createLog("error", request.error, "error_log_get_invited_user_data");
             } else {
                 setInvitedUser(request);
-                inviteButton.current.innerText = "Send Invite";
             }
         }
 
@@ -44,6 +48,7 @@ const InviteUser = ({ setConversations }) => {
                 createNotification({ type: "success", msg: request.message });
                 setConversations(prev => ([...prev, guid]));
                 e.target.reset();
+                setInvitedUser(null);
             }
         }
 
@@ -76,7 +81,9 @@ const InviteUser = ({ setConversations }) => {
 
                     <form action="POST" className="chat-invite-user-form" onSubmit={onSubmit}>
                         <input type="text" name="userId" placeholder="Enter a User ID" />
-                        <button type="submit" ref={inviteButton}>Preview User</button>
+                        <button type="submit" ref={inviteButton}>
+                            {invitedUser ? "Send Invite" : "Preview User"}
+                        </button>
                     </form>
                 </>)}
                 onHandleClose={() => setModalVisible(false)}
