@@ -23,6 +23,7 @@ const InviteUser = ({ setConversations }) => {
 
         const getInvitedUserData = async () => {
             const request = await userServiceGetUserFromId(userId, user.jwt);
+            console.log(request)
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
                 createLog("error", request.error, "error_log_get_invited_user_data");

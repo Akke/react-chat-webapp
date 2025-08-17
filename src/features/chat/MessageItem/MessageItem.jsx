@@ -8,12 +8,12 @@ import { messageServiceDeleteMessage } from "../../../service/messageService";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { LoggingContext } from "../../../contexts/LoggingProvider";
 
-const MessageItem = ({ currentConversationMessages, setCurrentConversationMessages, item, i }) => {
+const MessageItem = ({item, i, conversationMessages, messages, setMessages }) => {
     const { cachedUsers } = useContext(UserContext);
     const { user } = useContext(AuthContext);
     const { createNotification } = useContext(NotifyContext);
     const { username, avatar } = cachedUsers[item.userId];
-    const lastMessage = currentConversationMessages[i+1];
+    const lastMessage = conversationMessages[i+1];
     const bSimplifyUI = lastMessage && lastMessage.userId == item.userId // whether to show less / "simplify" UI
     const bBelongsToSelf = item.userId == user.id;
     const { createLog } = useContext(LoggingContext);
@@ -26,8 +26,8 @@ const MessageItem = ({ currentConversationMessages, setCurrentConversationMessag
             createLog("error", request.error, "error_log_on_delete_message");
         } else {
             createNotification({ type: "success", msg: "Message deleted successfully." });
-            const updatedConversationMessages = currentConversationMessages.filter(f => f.id != item.id);
-            setCurrentConversationMessages(updatedConversationMessages);
+            const updatedConversationMessages = messages.filter(f => f.id != item.id);
+            setMessages(updatedConversationMessages);
         }
     }
 

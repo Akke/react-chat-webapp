@@ -9,6 +9,7 @@ import { UserContext } from "../../contexts/UserProvider";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
 import { NotifyContext } from "../../contexts/NotifyProvider";
 import { LoggingContext } from "../../contexts/LoggingProvider";
+import { IoChatboxEllipses } from "react-icons/io5";
 
 const ChatPage = () => {
     const { user } = useContext(AuthContext);
@@ -17,17 +18,12 @@ const ChatPage = () => {
     const [conversations, setConversations] = useState([]);
     const [messages, setMessages] = useState([]);
     const [activeConversation, setActiveConversation] = useState(null);
-    const [currentConversationMessages, setCurrentConversationMessages] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const { createLog } = useContext(LoggingContext);
 
     useEffect(() => {
         loadConversations();
     }, []);
-
-    useEffect(() => {
-        loadConversations();
-    }, [conversations]);
 
     useEffect(() => {
         /*messages.forEach(msg => {
@@ -45,7 +41,13 @@ const ChatPage = () => {
 
                 conversationIds.map((id) => {
                     getMessages(id)
-                        .then((response) => setMessages(prev => ([...prev, ...response])))
+                        .then((response) => {
+                            setMessages(prev => {
+                                const msgs = response.filter((m) => !prev.some(ex => ex.id == m.id));
+
+                                return [...prev, ...msgs];
+                            })
+                        })
                         .finally(() => setIsLoaded(true))
                         .catch((e) => createLog("error", e, "error_log_get_messages_promise"));
                 });
@@ -103,13 +105,15 @@ const ChatPage = () => {
                 createLog("error", request.error, "error_log_on_chat_message_submit");
             } else {
                 e.target.reset();
-                setCurrentConversationMessages(prevMessages => [...prevMessages, {
+                const msgObj = {
                     id: request.latestMessage.id,
                     text: request.latestMessage.text,
                     createdAt: Date.now(),
                     userId: user.id,
                     conversationId: request.latestMessage.conversationId
-                }]);
+                };
+
+                setMessages(prev => [...prev, msgObj]);
             }
         }
 
@@ -117,15 +121,7 @@ const ChatPage = () => {
     }
 
     const openConversation = async (id) => {
-        const getAndFilterMessages = async () => {
-            const msgs = await getMessages(id); // fetch fresh when opening conversation
-            const filtered = msgs.filter((m) => m.conversationId == id);
-
-            setCurrentConversationMessages(filtered);
-            setActiveConversation(id);
-        }
-
-        getAndFilterMessages();
+        setActiveConversation(id);
     }
 
     return (
@@ -150,12 +146,15 @@ const ChatPage = () => {
             </div>
 
             <div className="right-side-message-container">
-                <MessageList
-                    activeConversation={activeConversation}
-                    currentConversationMessages={currentConversationMessages} 
-                    setCurrentConversationMessages={setCurrentConversationMessages}
-                    onChatMessageSubmit={onChatMessageSubmit}
-                />
+                {activeConversation ? 
+                    <MessageList
+                        activeConversation={activeConversation}
+                        messages={messages}
+                        setMessages={setMessages}
+                        onChatMessageSubmit={onChatMessageSubmit}
+                    /> :
+                    <IoChatboxEllipses className="no-chats" />
+                }
             </div>
         </div>
     );
