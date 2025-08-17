@@ -11,7 +11,7 @@ const RegisterForm = ({ csrfToken }) => {
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
     const { createNotification } = useContext(NotifyContext);
-    const [avatarUrl, setAvatarUrl] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("https://avatars.githubusercontent.com/u/62652");
     const [username, setUsername] = useState("");
     const { createLog } = useContext(LoggingContext);
 
@@ -65,7 +65,7 @@ const RegisterForm = ({ csrfToken }) => {
             <input type="password" name="password" placeholder="Password" required />
             <input type="password" name="repeatpassword" placeholder="Repeat Password" required />
             <input type="email" name="email" placeholder="E-mail" required />
-            <input type="text" name="avatar" placeholder="Avatar (URL)" onChange={onAvatarChanged} className="input-avatar" required />
+            <input type="text" name="avatar" placeholder="Avatar (URL)" defaultValue={avatarUrl} onChange={onAvatarChanged} className="input-avatar" required />
 
             <MiniProfile avatar={avatarUrl} username={username} />
 
