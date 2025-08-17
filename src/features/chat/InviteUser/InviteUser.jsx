@@ -5,6 +5,7 @@ import { NotifyContext } from "../../../contexts/NotifyProvider";
 import { AuthContext } from "../../../contexts/AuthProvider";
 import Modal from "../../../components/Modal/Modal";
 import MiniProfile from "../MiniProfile/MiniProfile";
+import { LoggingContext } from "../../../contexts/LoggingProvider";
 
 const InviteUser = () => {
     const { createNotification } = useContext(NotifyContext);
@@ -12,6 +13,7 @@ const InviteUser = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [invitedUser, setInvitedUser] = useState(null);
     const inviteButton = useRef(null);
+    const { createLog } = useContext(LoggingContext);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -23,6 +25,7 @@ const InviteUser = () => {
             const request = await userServiceGetUserFromId(userId, user.jwt);
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
+                createLog("error", request.error, "error_log_get_invited_user_data");
             } else {
                 setInvitedUser(request);
                 inviteButton.current.innerText = "Send Invite";
@@ -34,6 +37,7 @@ const InviteUser = () => {
 
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
+                createLog("error", request.error, "error_log_invite_user_send_form");
             } else {
                 createNotification({ type: "success", msg: request.message });
 

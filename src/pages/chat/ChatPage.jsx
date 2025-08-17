@@ -8,6 +8,7 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import { UserContext } from "../../contexts/UserProvider";
 import { messageServiceGetConversations, messageServiceGetMessages, messageServicePostMessage } from "../../service/messageService";
 import { NotifyContext } from "../../contexts/NotifyProvider";
+import { LoggingContext } from "../../contexts/LoggingProvider";
 
 const ChatPage = () => {
     const { user } = useContext(AuthContext);
@@ -18,6 +19,7 @@ const ChatPage = () => {
     const [activeConversation, setActiveConversation] = useState(null);
     const [currentConversationMessages, setCurrentConversationMessages] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const { createLog } = useContext(LoggingContext);
 
     useEffect(() => {
         getConversations()
@@ -30,10 +32,10 @@ const ChatPage = () => {
                     getMessages(id)
                         .then((response) => setMessages(prev => ([...prev, ...response])))
                         .finally(() => setIsLoaded(true))
-                        .catch((e) => console.error(e));
+                        .catch((e) => createLog("error", e, "error_log_get_messages_promise"));
                 });
             })
-            .catch((e) => console.error(e));
+            .catch((e) => createLog("error", e, "error_log_get_conversations_promise"));
     }, []);
 
     useEffect(() => {
@@ -48,6 +50,7 @@ const ChatPage = () => {
         
         if(request.error) {
             createNotification({ type: "error", msg: request.error });
+            createLog("error", request.error, "error_log_get_messages");
         } else {
             return request;              
         }
@@ -60,6 +63,7 @@ const ChatPage = () => {
         
         if(request.error) {
             createNotification({ type: "error", msg: request.error });
+            createLog("error", request.error, "error_log_get_conversations");
         } else {
             const tempIds = [];
 
@@ -88,6 +92,7 @@ const ChatPage = () => {
             
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
+                createLog("error", request.error, "error_log_on_chat_message_submit");
             } else {
                 e.target.reset();
                 setCurrentConversationMessages(prevMessages => [...prevMessages, {

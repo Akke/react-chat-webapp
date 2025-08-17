@@ -6,6 +6,7 @@ import AvatarPreview from "../../components/AvatarPreview/AvatarPreview";
 import { userServiceDeleteUser, userServiceLogin, userServiceUpdateUser } from "../../service/userService";
 import { NotifyContext } from "../../contexts/NotifyProvider";
 import Modal from "../../components/Modal/Modal";
+import { LoggingContext } from "../../contexts/LoggingProvider";
 
 const Profile = () => {
     const { user, setAuth, clearAuth } = useContext(AuthContext);
@@ -13,6 +14,7 @@ const Profile = () => {
     const { createNotification } = useContext(NotifyContext);
     const [csrfToken, setCsrfToken] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const { createLog } = useContext(LoggingContext);
     
     useEffect(() => {
         fetch("https://chatify-api.up.railway.app/csrf", {
@@ -38,13 +40,17 @@ const Profile = () => {
                 return;
             }
 
+            createLog("info", `Sending request to external API DELETE /users/${user.id}`, "info_log_on_submit_delete_account_request_api");
+
             const deleteAccountRequest = await userServiceDeleteUser(user.id, user.jwt);
             if(deleteAccountRequest.error) {
                 createNotification({ type: "error", msg: deleteAccountRequest.error });
+                createLog("error", deleteAccountRequest.error, "error_log_on_submit_delete_account_send_form");
                 return;
             }
 
             createNotification({ type: "success", msg: deleteAccountRequest.message });
+            createLog("info", "Receieved response 200 OK (User deleted successfully).", "info_log_on_submit_delete_account_request_api");
             clearAuth();
         }
 
@@ -64,6 +70,7 @@ const Profile = () => {
             const initialFormAuthRequest = await userServiceLogin(user.user, password, csrfToken);
             if(initialFormAuthRequest.error) {
                 createNotification({ type: "error", msg: initialFormAuthRequest.error });
+                createLog("error", initialFormAuthRequest.error, "error_log_on_settings_submit_send_form_initial_auth");
                 return;
             }
 
@@ -73,12 +80,15 @@ const Profile = () => {
                 email: email
             }
 
+            createLog("info", "Sending request to external API PUT /user", "info_log_on_settings_submit_request_api");
             const request = await userServiceUpdateUser(user.id, data, user.jwt);
             
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
+                createLog("error", request.error, "error_log_on_settings_submit_send_form");
             } else {
                 createNotification({ type: "success", msg: request.message });
+                createLog("info", "Received response 200 OK (User updated successfully).", "info_log_on_settings_submit_request_api");
 
                 const updatedUserState = user;
                 updatedUserState.avatar = avatar;
@@ -88,6 +98,7 @@ const Profile = () => {
                 const postFormAuthProcess = await userServiceLogin(username, password, csrfToken);
                 if(postFormAuthProcess.error) {
                     createNotification({ type: "error", msg: postFormAuthProcess.error });
+                    createLog("error", postFormAuthProcess.error, "error_log_on_settings_submit_send_form_post_auth");
                 } else {
                     setAuth(postFormAuthProcess.token);
                 }

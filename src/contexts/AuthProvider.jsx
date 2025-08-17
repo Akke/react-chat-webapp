@@ -1,13 +1,15 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userServiceLogin } from "../service/userService";
+import { LoggingContext } from "./LoggingProvider";
 
 export const AuthContext = createContext();
 
 const AuthProvider = (props) => {
     const [user, setUser] = useState(null);
     const [authReady, setAuthReady] = useState(false);
+    const { createLog } = useContext(LoggingContext);
 
     useEffect(() => {
         const cache = localStorage.getItem("user");
@@ -23,6 +25,8 @@ const AuthProvider = (props) => {
                 } else {
                     setUser(JSON.parse(cache));
                 }
+            } else {
+                createLog("warn", "JWT could not be decoded or did not contain property 'exp'", "warn_log_auth_provider_decoded_jwt_missing");
             }
         }
     }, []);

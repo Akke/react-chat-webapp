@@ -6,6 +6,7 @@ import "./MessageItem.css";
 import AvatarPreview from "../../../components/AvatarPreview/AvatarPreview";
 import { messageServiceDeleteMessage } from "../../../service/messageService";
 import { NotifyContext } from "../../../contexts/NotifyProvider";
+import { LoggingContext } from "../../../contexts/LoggingProvider";
 
 const MessageItem = ({ currentConversationMessages, setCurrentConversationMessages, item, i }) => {
     const { cachedUsers } = useContext(UserContext);
@@ -15,12 +16,14 @@ const MessageItem = ({ currentConversationMessages, setCurrentConversationMessag
     const lastMessage = currentConversationMessages[i+1];
     const bSimplifyUI = lastMessage && lastMessage.userId == item.userId // whether to show less / "simplify" UI
     const bBelongsToSelf = item.userId == user.id;
+    const { createLog } = useContext(LoggingContext);
 
     const onDeleteMessage = () => {
         const request = messageServiceDeleteMessage(item.id, user.jwt);
 
         if(request.error) {
             createNotification({ type: "error", msg: request.error });
+            createLog("error", request.error, "error_log_on_delete_message");
         } else {
             createNotification({ type: "success", msg: "Message deleted successfully." });
             const updatedConversationMessages = currentConversationMessages.filter(f => f.id != item.id);

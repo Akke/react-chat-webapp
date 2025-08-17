@@ -5,6 +5,7 @@ import { userServiceRegister } from "../../../service/userService";
 import "./RegisterForm.css";
 import MiniProfile from "../../chat/MiniProfile/MiniProfile";
 import { useNavigate } from "react-router-dom";
+import { LoggingContext } from "../../../contexts/LoggingProvider";
 
 const RegisterForm = ({ csrfToken }) => {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const RegisterForm = ({ csrfToken }) => {
     const { createNotification } = useContext(NotifyContext);
     const [avatarUrl, setAvatarUrl] = useState("");
     const [username, setUsername] = useState("");
+    const { createLog } = useContext(LoggingContext);
 
     const onAvatarChanged = (e) => {
         setAvatarUrl(e.target.value);
@@ -32,11 +34,15 @@ const RegisterForm = ({ csrfToken }) => {
         const avatar = formData.get("avatar");
 
         const sendForm = async () => {
+            createLog("info", "Sending request to external API POST /auth/register", "info_log_register_send_form_request_api");
+
             const request = await userServiceRegister(username, password, repeatPassword, email, avatar, csrfToken);
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
+                createLog("error", request.error, "error_log_register_send_form");
             } else {
                 createNotification({ type: "success", msg: request.message + ". Redirecting to login." });
+                createLog("info", `User '${username}' was created successfully (201 User registered successfully).`, "info_log_register_send_form");
                 navigate("/login");
             }
         }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { userServiceGetUserFromId, userServiceGetUsers } from "../service/userService";
 import { AuthContext } from "./AuthProvider";
+import { LoggingContext } from "./LoggingProvider";
 
 export const UserContext = createContext();
 
@@ -8,6 +9,7 @@ const UserProvider = (props) => {
     const { user } = useContext(AuthContext);
     const [cachedUsers, setCachedUsers] = useState({});
     const fetchedUsers = useRef(new Set());
+    const { createLog } = useContext(LoggingContext);
 
     // tricky react moment where states havent been properly updated yet
     // so if two API requests run simultaneously then it doesnt see that
@@ -49,6 +51,7 @@ const UserProvider = (props) => {
             })
             .catch((e) => {
                 console.error(e);
+                createLog("error", e, "error_log_user_provider_cache_users_get_users_promise");
             });
     }
 
