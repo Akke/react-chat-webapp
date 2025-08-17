@@ -17,12 +17,14 @@ const UserProvider = (props) => {
     // this can be fixed by using useRef which doesnt trigger rerenders and
     // allows us to keep track of what user we actually have already cached.
     const cacheUser = (id) => {
+        console.log(cachedUsers[id], fetchedUsers.current.has(id))
         if(cachedUsers[id] || fetchedUsers.current.has(id)) return; // if the user has been cached or is in the process of being cached, skip
 
         fetchedUsers.current.add(id);
 
         userServiceGetUserFromId(id, user.jwt)
             .then((response) => {
+                console.log(response)
                 setCachedUsers(prev => ({
                     ...prev,
                     [id]: response
@@ -55,8 +57,13 @@ const UserProvider = (props) => {
             });
     }
 
+    const clearCachedUsers = () => {
+        setCachedUsers({})
+        fetchedUsers.current.clear();
+    }
+
     return (
-        <UserContext.Provider value={{ cacheUser, cachedUsers, cacheUsers }}>
+        <UserContext.Provider value={{ cacheUser, cachedUsers, cacheUsers, clearCachedUsers }}>
             {props.children}
         </UserContext.Provider>
     );

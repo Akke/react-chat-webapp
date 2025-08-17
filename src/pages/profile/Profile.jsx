@@ -7,6 +7,7 @@ import { userServiceDeleteUser, userServiceLogin, userServiceUpdateUser } from "
 import { NotifyContext } from "../../contexts/NotifyProvider";
 import Modal from "../../components/Modal/Modal";
 import { LoggingContext } from "../../contexts/LoggingProvider";
+import { UserContext } from "../../contexts/UserProvider";
 
 const Profile = () => {
     const { user, setAuth, clearAuth } = useContext(AuthContext);
@@ -15,6 +16,7 @@ const Profile = () => {
     const [csrfToken, setCsrfToken] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     const { createLog } = useContext(LoggingContext);
+    const { clearCachedUsers } = useContext(UserContext);
     
     useEffect(() => {
         fetch("https://chatify-api.up.railway.app/csrf", {
@@ -94,6 +96,8 @@ const Profile = () => {
                 updatedUserState.avatar = avatar;
                 updatedUserState.email = email;
                 updatedUserState.user = username;
+
+                clearCachedUsers();
 
                 const postFormAuthProcess = await userServiceLogin(username, password, csrfToken);
                 if(postFormAuthProcess.error) {
