@@ -32,7 +32,7 @@ export const userServiceRegister = async (username, password, repeatPassword, em
     return response;
 }
 
-export const userServiceInvite = async (userId, jwt) => {
+export const userServiceInvite = async (userId, guid, jwt) => {
     const request = await fetch(`https://chatify-api.up.railway.app/invite/${userId}`, {
         method: "POST",
         headers: { 
@@ -40,7 +40,7 @@ export const userServiceInvite = async (userId, jwt) => {
             "Authorization": `Bearer ${jwt}`
         },
         body: JSON.stringify({
-            conversationId: crypto.randomUUID()
+            conversationId: guid
         })
     });
 

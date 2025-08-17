@@ -22,6 +22,21 @@ const ChatPage = () => {
     const { createLog } = useContext(LoggingContext);
 
     useEffect(() => {
+        loadConversations();
+    }, []);
+
+    useEffect(() => {
+        loadConversations();
+    }, [conversations]);
+
+    useEffect(() => {
+        /*messages.forEach(msg => {
+            cacheUser(msg.userId);
+        })*/
+       cacheUsers();
+    }, [messages]);
+
+    const loadConversations = () => {
         getConversations()
             .then((conversationIds) => {
                 if(!conversationIds) return;
@@ -36,14 +51,7 @@ const ChatPage = () => {
                 });
             })
             .catch((e) => createLog("error", e, "error_log_get_conversations_promise"));
-    }, []);
-
-    useEffect(() => {
-        /*messages.forEach(msg => {
-            cacheUser(msg.userId);
-        })*/
-       cacheUsers();
-    }, [messages]);
+    }
 
     const getMessages = async (conversationId = null) => {
         const request = await messageServiceGetMessages(user.jwt, conversationId);
@@ -128,7 +136,9 @@ const ChatPage = () => {
                     username={user.user} 
                 />
 
-                <InviteUser />
+                <InviteUser
+                    setConversations={setConversations} 
+                />
 
                 <ConversationList
                     isLoaded={isLoaded}

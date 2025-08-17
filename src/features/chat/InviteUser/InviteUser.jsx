@@ -7,7 +7,7 @@ import Modal from "../../../components/Modal/Modal";
 import MiniProfile from "../MiniProfile/MiniProfile";
 import { LoggingContext } from "../../../contexts/LoggingProvider";
 
-const InviteUser = () => {
+const InviteUser = ({ setConversations }) => {
     const { createNotification } = useContext(NotifyContext);
     const { user } = useContext(AuthContext);
     const [modalVisible, setModalVisible] = useState(false);
@@ -33,14 +33,15 @@ const InviteUser = () => {
         }
 
         const sendForm = async () => {
-            const request = await userServiceInvite(userId, user.jwt);
+            const guid = crypto.randomUUID();
+            const request = await userServiceInvite(userId, guid, user.jwt);
 
             if(request.error) {
                 createNotification({ type: "error", msg: request.error });
                 createLog("error", request.error, "error_log_invite_user_send_form");
             } else {
                 createNotification({ type: "success", msg: request.message });
-
+                setConversations(prev => ([...prev, guid]));
                 e.target.reset();
             }
         }
