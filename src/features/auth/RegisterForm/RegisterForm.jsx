@@ -61,11 +61,11 @@ const RegisterForm = ({ csrfToken }) => {
 
     return (
         <form className="register-form" onSubmit={onSubmit}>
-            <input type="text" name="username" placeholder="Username" onChange={onUsernameChanged} />
-            <input type="password" name="password" placeholder="Password" />
-            <input type="password" name="repeatpassword" placeholder="Repeat Password" />
-            <input type="email" name="email" placeholder="E-mail" />
-            <input type="text" name="avatar" placeholder="Avatar (URL)" onChange={onAvatarChanged} className="input-avatar" />
+            <input type="text" name="username" placeholder="Username" onChange={onUsernameChanged} required />
+            <input type="password" name="password" placeholder="Password" required />
+            <input type="password" name="repeatpassword" placeholder="Repeat Password" required />
+            <input type="email" name="email" placeholder="E-mail" required />
+            <input type="text" name="avatar" placeholder="Avatar (URL)" onChange={onAvatarChanged} className="input-avatar" required />
 
             <MiniProfile avatar={avatarUrl} username={username} />
 
